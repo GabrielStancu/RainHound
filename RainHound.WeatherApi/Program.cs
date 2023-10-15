@@ -1,11 +1,16 @@
+using RainHound.WeatherApi.Configuration;
+using RainHound.WeatherApi.Extensions;
+using RainHound.WeatherApi.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddSingleton<IWeatherService, WeatherService>();
+builder.Services.AddConfiguration<WeatherApiConfiguration>(builder.Configuration, "WeatherApi");
 
 var app = builder.Build();
 
@@ -17,9 +22,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();

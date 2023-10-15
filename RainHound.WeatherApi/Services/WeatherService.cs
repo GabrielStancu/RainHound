@@ -1,25 +1,28 @@
 using System.Text.Json;
 using RainHound.WeatherApi.Business.RequestBuilders;
+using RainHound.WeatherApi.Business.UrlBuilders;
 using RainHound.WeatherApi.Business.UrlMappers;
 using RainHound.WeatherApi.Configuration;
-using RainHound.WeatherApi.Contracts.Requests;
 using RainHound.WeatherApi.Contracts.Responses;
 using RestSharp;
 
 namespace RainHound.WeatherApi.Services;
 
-public class WeatherService
+public interface IWeatherService
+{
+    Task<ForecastResponse?> GetForecastAsync(string city, int days, bool isAirQualityRequired, bool areAlertsRequired);
+    Task<WeatherResponse?> GetWeatherAsync(string city, bool isAirQualityRequired);
+}
+
+public class WeatherService : IWeatherService
 {
     private readonly WeatherApiConfiguration _weatherApiConfiguration;
     private readonly RestClient _client;
-    private readonly IForecastUrlMapper _forecastUrlBuilder;
 
-    public WeatherService(WeatherApiConfiguration weatherApiConfiguration,
-        IForecastUrlMapper forecastUrlMapper)
+    public WeatherService(WeatherApiConfiguration weatherApiConfiguration)
     {
         _weatherApiConfiguration = weatherApiConfiguration;
         _client ??= new RestClient(weatherApiConfiguration.BaseUrl);
-        _forecastUrlBuilder = forecastUrlMapper;
     }
 
     public async Task<ForecastResponse?> GetForecastAsync(string city, int days, bool isAirQualityRequired, bool areAlertsRequired)
@@ -29,23 +32,36 @@ public class WeatherService
             .AreAlertsRequired(areAlertsRequired)
             .ForDays(days)
             .Build();
-        var requestUrl = _forecastUrlBuilder.Build(forecastRequest);
+        var requestUrl = ForecastUrlMapper.Build(forecastRequest);
         var request = new RestRequest(requestUrl);
         var response = await _client.ExecuteGetAsync(request);
 
-        if (!response.IsSuccessful)
+        if (!response.IsSuccessful || response.Content is null)
         {
             // Log here
             return null;
         }
 
-        var forecastResponse = JsonSerializer.Deserialize<ForecastResponse>(response.Content ?? string.Empty);
+        var forecastResponse = JsonSerializer.Deserialize<ForecastResponse>(response.Content);
         return forecastResponse;
     }
 
     public async Task<WeatherResponse?> GetWeatherAsync(string city, bool isAirQualityRequired)
     {
-        // TODO
-        return null;
+        var weatherRequest = new WeatherRequestBuilder(_weatherApiConfiguration.ApiKey, city)
+            .IsAirQualityRequired(isAirQualityRequired)
+            .Build();
+        var requestUrl = WeatherUrlMapper.Build(weatherRequest);
+        var request = new RestRequest(requestUrl);
+        var response = await _client.ExecuteGetAsync(request);
+
+        if (!response.IsSuccessful || response.Content is null)
+        {
+            // Log here
+            return null;
+        }
+
+        var weatherResponse = JsonSerializer.Deserialize<WeatherResponse>(response.Content);
+        return weatherResponse;
     }
 }

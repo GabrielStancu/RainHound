@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using RainHound.WeatherApi.Services;
 
 namespace RainHound.WeatherApi.Controllers;
 
@@ -6,15 +7,36 @@ namespace RainHound.WeatherApi.Controllers;
 [Route("api/[controller]")]
 public class WeatherController : ControllerBase
 {
-    [HttpGet("weather/{city}/{days}")]
-    public async Task<IActionResult> GetWeatherForCity(string city, int? days)
+    private readonly IWeatherService _weatherService;
+
+    public WeatherController(IWeatherService weatherService)
     {
-        return Ok();
+        _weatherService = weatherService;
     }
 
-    [HttpGet("forecast/{city}")]
-    public async Task<IActionResult> GetForecastForCity(string city, int? days)
+    [HttpGet("weather")]
+    public async Task<IActionResult> GetWeatherForCity(string city, bool isAirQualityRequired)
     {
-        return Ok();
+        var weatherResponse = await _weatherService.GetWeatherAsync(city, isAirQualityRequired);
+
+        if (weatherResponse is null)
+        {
+            return BadRequest();
+        }
+
+        return Ok(weatherResponse);
+    }
+
+    [HttpGet("forecast")]
+    public async Task<IActionResult> GetForecastForCity(string city, int? days, bool aqi, bool alerts)
+    {
+        var forecastResponse = await _weatherService.GetForecastAsync(city, days ?? 1, aqi, alerts);
+
+        if (forecastResponse is null)
+        {
+            return BadRequest();
+        }
+
+        return Ok(forecastResponse);
     }
 }
