@@ -10,7 +10,13 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<IWeatherService, WeatherService>();
-builder.Services.AddConfiguration<WeatherApiConfiguration>(builder.Configuration, "WeatherApi");
+builder.Services.AddConfiguration<WeatherApiConfiguration>(builder.Configuration, WeatherApiConfiguration.SectionName);
+var connstr = builder.Configuration.GetConnectionString("AppInsights");
+builder.Logging.AddApplicationInsights(
+    configureTelemetryConfiguration: (config) => 
+        config.ConnectionString = builder.Configuration.GetConnectionString("AppInsights"),
+        configureApplicationInsightsLoggerOptions: (options) => { }
+);
 
 var app = builder.Build();
 

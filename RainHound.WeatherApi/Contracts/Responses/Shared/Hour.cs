@@ -32,7 +32,7 @@ public class Hour
     public int WindDegree { get; set; }
 
     [JsonPropertyName("wind_dir")]
-    public string WindDir { get; set; }
+    public string WindDir { get; set; } = string.Empty;
 
     [JsonPropertyName("pressure_mb")]
     public double PressureMb { get; set; }

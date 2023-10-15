@@ -15,5 +15,5 @@ public class ForecastResponse
     public Forecast? Forecast { get; set; }
 
     [JsonPropertyName("alerts")]
-    public IEnumerable<dynamic>? Alerts { get; set; } // TODO: see what this looks like when received
+    public dynamic? Alerts { get; set; } // TODO: see what this looks like when received
 }

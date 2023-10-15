@@ -17,11 +17,13 @@ public interface IWeatherService
 public class WeatherService : IWeatherService
 {
     private readonly WeatherApiConfiguration _weatherApiConfiguration;
+    private readonly ILogger<WeatherService> _logger;
     private readonly RestClient _client;
 
-    public WeatherService(WeatherApiConfiguration weatherApiConfiguration)
+    public WeatherService(WeatherApiConfiguration weatherApiConfiguration, ILogger<WeatherService> logger)
     {
         _weatherApiConfiguration = weatherApiConfiguration;
+        _logger = logger;
         _client ??= new RestClient(weatherApiConfiguration.BaseUrl);
     }
 
@@ -32,17 +34,25 @@ public class WeatherService : IWeatherService
             .AreAlertsRequired(areAlertsRequired)
             .ForDays(days)
             .Build();
+
+        _logger.LogTrace($"Getting forecast for request <{JsonSerializer.Serialize(forecastRequest)}>");
+
         var requestUrl = ForecastUrlMapper.Build(forecastRequest);
+
+        _logger.LogTrace($"Calling the URL at {requestUrl}");
+
         var request = new RestRequest(requestUrl);
         var response = await _client.ExecuteGetAsync(request);
 
         if (!response.IsSuccessful || response.Content is null)
         {
-            // Log here
+            _logger.LogError($"Failed to get the weather. Response: {response.Content}");
             return null;
         }
 
+        _logger.LogTrace($"Received response: {response.Content}");
         var forecastResponse = JsonSerializer.Deserialize<ForecastResponse>(response.Content);
+        
         return forecastResponse;
     }
 
