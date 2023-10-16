@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using RainHound.WeatherApi.Configuration;
 
 namespace RainHound.WeatherApi.Controllers;
 
@@ -7,11 +8,13 @@ namespace RainHound.WeatherApi.Controllers;
 public class TestController : ControllerBase
 {
     private readonly IWebHostEnvironment _environment;
+    private readonly EnvironmentConfiguration _config;
     private readonly ILogger<TestController> _logger;
 
-    public TestController(IWebHostEnvironment environment, ILogger<TestController> logger)
+    public TestController(IWebHostEnvironment environment, EnvironmentConfiguration config, ILogger<TestController> logger)
     {
         _environment = environment;
+        _config = config;
         _logger = logger;
     }
 
@@ -28,7 +31,7 @@ public class TestController : ControllerBase
     [HttpGet("environment")]
     public IActionResult GetEnvironment()
     {
-        string message = _environment.EnvironmentName;
+        string message = $"Environment variable: {_environment.EnvironmentName}. Configured value: {_config.Name}";
 
         _logger.LogInformation(message);
 
