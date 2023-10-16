@@ -8,8 +8,7 @@ public static class ConfigurationsExtensions
 
         if (section is null)
         {
-            // LOG
-            throw new ArgumentException("Section not configured!");
+            throw new ArgumentException($"[G] Section {sectionName} not configured!");
         }
 
         services.AddSingleton<T>(section);
