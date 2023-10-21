@@ -1,0 +1,27 @@
+<h1>Weather Information</h1>
+
+<ul class="tab-menu">
+    <li><a (click)="showTab('current')">Current Weather</a></li>
+    <li><a (click)="showTab('forecast')">Forecast</a></li>
+</ul>
+
+<div *ngIf="selectedTab === 'current'" id="current-weather" class="tab">
+    <h2>Current Weather</h2>
+    <p>Current Temperature: <span>{{ currentTemperature }}°C / {{ convertToCelsius(currentTemperature) }}°F</span></p>
+    <p>Wind: <span>{{ currentWind }} km/h</span></p>
+    <p>Air Humidity: <span>{{ currentHumidity }}%</span></p>
+</div>
+
+<div *ngIf="selectedTab === 'forecast'" id="forecast" class="tab">
+    <h2>Forecast</h2>
+    <ul>
+        <li *ngFor="let hour of forecastData">
+            {{ hour.name }}:
+            <ul>
+                <li>Temperature: <span>{{ hour.temperature }}°C / {{ convertToCelsius(hour.temperature) }}°F</span></li>
+                <li>Wind: <span>{{ hour.wind }} km/h</span></li>
+                <li>Humidity: <span>{{ hour.humidity }}%</span></li>
+            </ul>
+        </li>
+    </ul>
+</div>
