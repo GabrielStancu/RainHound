@@ -1,7 +1,13 @@
-<!-- <img id="navbar-logo" src="assets/logo hound.png"/> -->
-<button mat-button [matMenuTriggerFor]="menu" id="weather-data-btn">Weather Data</button>
+<button mat-icon-button [matMenuTriggerFor]="menu" id="weather-data-btn" class="navbar-btn">
+  <mat-icon>cloud</mat-icon>
+</button>
 <mat-menu #menu="matMenu">
-  <button mat-menu-item>Weather</button>
-  <button mat-menu-item>Forecast</button>
+  <button mat-menu-item routerLink="/weather" >Weather</button>
+  <button mat-menu-item routerLink="/forecast" >Forecast</button>
 </mat-menu>
 
+<div id="navbar-name"><span>Rain Hound</span></div>
+
+<button mat-icon-button id="navbar-settings" class="navbar-btn" routerLink="/settings">
+  <mat-icon>settings</mat-icon>
+</button>

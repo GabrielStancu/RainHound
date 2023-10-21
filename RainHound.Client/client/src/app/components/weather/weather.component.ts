@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { WeatherService } from 'src/app/services/weather.service.ts.service';
 
 @Component({
   selector: 'app-weather',
@@ -6,25 +7,21 @@ import { Component } from '@angular/core';
   styleUrls: ['./weather.component.css']
 })
 export class WeatherComponent {
-  selectedTab: 'current' | 'forecast' = 'current'; // Default to 'current'
-
-  // Current weather data
   currentTemperature: number = 20;
   currentWind: number = 10;
   currentHumidity: number = 50;
 
-  // Forecast data (you can replace this with your actual data)
-  forecastData = [
-    { name: 'Next Hour', temperature: 22, wind: 12, humidity: 45 },
-    { name: 'Next 2 Hours', temperature: 23, wind: 15, humidity: 40 }
-    // Add more forecast data as needed
-  ];
+  constructor(private weatherService: WeatherService) {}
 
   convertToCelsius(fahrenheit: number): number {
     return ((fahrenheit - 32) * 5) / 9;
   }
 
-  showTab(tab: 'current' | 'forecast'): void {
-    this.selectedTab = tab;
+  ngOnInit() {
+    this.weatherService.getWeather().subscribe(resp => {
+      console.log('Weather:' + resp);
+    }, error => {
+      console.log('ERROR: ' +  error.message);
+    })
   }
 }

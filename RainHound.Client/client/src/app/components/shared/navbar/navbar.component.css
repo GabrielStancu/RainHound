@@ -1,11 +1,30 @@
 #weather-data-btn {
-  color: white;
-  font-size: 18px;
-  margin-left: 30px;
+  margin-left: 50px;
 }
 
-#navbar-logo {
-  height: 160px;
-  margin-left: 30px;
-  display: block;
+#navbar-name {
+  color: white;
+  background-color: #1d1a17;
+  height: 75px;
+  width: 280px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 30px !important;
+  position: absolute;
+  left: 42%;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+#navbar-settings {
+  margin-right: 50px;
+}
+
+.navbar-btn {
+  color: white;
+}
+
+.navbar-btn:hover {
+  background-color: #1a120e;
 }

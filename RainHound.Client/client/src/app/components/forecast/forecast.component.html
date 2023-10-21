@@ -1,0 +1,11 @@
+<h2>Forecast</h2>
+    <ul>
+        <li *ngFor="let hour of forecastData">
+            {{ hour.name }}:
+            <ul>
+                <li>Temperature: <span>{{ hour.temperature }}°C / {{ convertToCelsius(hour.temperature) }}°F</span></li>
+                <li>Wind: <span>{{ hour.wind }} km/h</span></li>
+                <li>Humidity: <span>{{ hour.humidity }}%</span></li>
+            </ul>
+        </li>
+    </ul>
