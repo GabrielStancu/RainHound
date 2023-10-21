@@ -5,19 +5,21 @@ using RainHound.WeatherApi.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: "AllowClient",
+                      policy  =>
+                      {
+                        string clientUrl = builder.Configuration.GetSection("Client")["BaseUrl"]!;
+                        policy.WithOrigins(clientUrl).AllowAnyHeader().AllowAnyMethod();
+                      });
+});
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<IWeatherService, WeatherService>();
 builder.Services.AddConfiguration<WeatherApiConfiguration>(builder.Configuration, WeatherApiConfiguration.SectionName);
 builder.Services.AddConfiguration<EnvironmentConfiguration>(builder.Configuration, EnvironmentConfiguration.SectionName);
-var connstr = builder.Configuration.GetConnectionString("AppInsights");
-builder.Logging.AddApplicationInsights(
-    configureTelemetryConfiguration: (config) => 
-        config.ConnectionString = builder.Configuration.GetConnectionString("AppInsights"),
-        configureApplicationInsightsLoggerOptions: (options) => { }
-);
 
 var app = builder.Build();
 
@@ -29,6 +31,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors("AllowClient");
 app.UseAuthorization();
 app.MapControllers();
 
