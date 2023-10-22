@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
+import { WeatherModel } from 'src/app/models/weather.model';
 import { WeatherService } from 'src/app/services/weather.service.ts.service';
+import { WeatherMapper } from 'src/app/utils/mappers/weather.mapper';
 
 @Component({
   selector: 'app-weather',
@@ -7,9 +9,7 @@ import { WeatherService } from 'src/app/services/weather.service.ts.service';
   styleUrls: ['./weather.component.css']
 })
 export class WeatherComponent {
-  currentTemperature: number = 20;
-  currentWind: number = 10;
-  currentHumidity: number = 50;
+  public weather: WeatherModel = new WeatherModel();
 
   constructor(private weatherService: WeatherService) {}
 
@@ -19,9 +19,9 @@ export class WeatherComponent {
 
   ngOnInit() {
     this.weatherService.getWeather().subscribe(resp => {
-      console.log('Weather:' + resp);
+      this.weather = WeatherMapper.map(resp);
     }, error => {
-      console.log('ERROR: ' +  error.message);
+      console.log('ERROR: ' +  JSON.stringify(error));
     })
   }
 }

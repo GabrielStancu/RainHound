@@ -22,9 +22,9 @@ export class ForecastComponent {
 
   ngOnInit() {
     this.weatherService.getForecast().subscribe(resp => {
-      console.log('Forecast:' + resp);
+      console.log('Forecast:' + JSON.stringify(resp));
     }, error => {
-      console.log('ERROR: ' +  error.message);
+      console.log('ERROR: ' +  JSON.stringify(error));
     })
   }
 }
