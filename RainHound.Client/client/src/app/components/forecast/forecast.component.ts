@@ -21,7 +21,10 @@ export class ForecastComponent {
   }
 
   ngOnInit() {
-    this.weatherService.getForecast().subscribe(resp => {
+    const city = localStorage.getItem('rainhound-city') ?? 'London';
+    const forecastDays = Number(localStorage.getItem('rainhound-forecast-days') ?? '1') ?? 1;
+    
+    this.weatherService.getForecast(city, forecastDays).subscribe(resp => {
       console.log('Forecast:' + JSON.stringify(resp));
     }, error => {
       console.log('ERROR: ' +  JSON.stringify(error));

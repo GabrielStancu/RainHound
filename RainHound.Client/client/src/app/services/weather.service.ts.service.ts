@@ -10,14 +10,11 @@ export class WeatherService {
 
   constructor(private httpClient: HttpClient) { }
 
-  public getWeather() : Observable<object> {
-    const city = 'Cluj-Napoca'; // should be taken from localStorage
+  public getWeather(city: string) : Observable<object> {
     return this.httpClient.get<object>(environment.apiUrl + '/Weather/weather?city=' + city);
   }
 
-  public getForecast() : Observable<object> {
-    const city = 'Cluj-Napoca'; // should be taken from localStorage
-    const days = 2; // should be taken from local storage
+  public getForecast(city: string, days: number) : Observable<object> {
     return this.httpClient.get<object>(environment.apiUrl + '/Weather/forecast?city=' + city + '&days=' + days);
   }
 }

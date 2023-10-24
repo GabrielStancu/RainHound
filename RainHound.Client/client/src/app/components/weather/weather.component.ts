@@ -10,6 +10,7 @@ import { WeatherMapper } from 'src/app/utils/mappers/weather.mapper';
 })
 export class WeatherComponent {
   public weather: WeatherModel = new WeatherModel();
+  public city = "";
 
   constructor(private weatherService: WeatherService) {}
 
@@ -18,7 +19,9 @@ export class WeatherComponent {
   }
 
   ngOnInit() {
-    this.weatherService.getWeather().subscribe(resp => {
+    this.city = localStorage.getItem('rainhound-city') ?? 'London';
+
+    this.weatherService.getWeather(this.city).subscribe(resp => {
       this.weather = WeatherMapper.map(resp);
     }, error => {
       console.log('ERROR: ' +  JSON.stringify(error));

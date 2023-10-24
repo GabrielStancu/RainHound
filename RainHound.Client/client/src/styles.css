@@ -5,7 +5,12 @@ html, body {
   height: 100%;
   font-family: 'Revalia' !important;
 }
-h2 {
+h2, .mat-mdc-menu-item-text {
   font-family: 'Revalia' !important;
 }
 body { margin: 0; }
+
+/* .mat-mdc-input-element {
+  caret-color: black !important;
+  border-color: black;
+} */

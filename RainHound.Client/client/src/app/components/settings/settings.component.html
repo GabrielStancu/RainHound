@@ -1,1 +1,33 @@
-<p>settings works!</p>
+<div id="settings-page-wrapper">
+  <div id="settings-form">
+    <p>
+      <mat-form-field appearance="outline">
+        <mat-label>City</mat-label>
+        <input matInput placeholder="City" type="text" [(ngModel)]="city">
+        <mat-icon matSuffix>location_on</mat-icon>
+        <mat-hint>Fill city for weather & forecast</mat-hint>
+      </mat-form-field>
+    </p>
+
+    <p>
+      <mat-form-field appearance="outline">
+        <mat-label>Forecast Days</mat-label>
+        <input matInput placeholder="Forecast Days" type="number" [(ngModel)]="forecastDays">
+        <mat-icon matSuffix>calendar_today</mat-icon>
+        <mat-hint>Fill number of days to forecast</mat-hint>
+      </mat-form-field>
+    </p>
+
+    <p>
+      <mat-form-field appearance="outline">
+        <mat-label>Email</mat-label>
+        <input matInput placeholder="Email" type="text" [(ngModel)]="email">
+        <mat-icon matSuffix>email</mat-icon>
+        <mat-hint>Email to be notified for alerts</mat-hint>
+      </mat-form-field>
+    </p>
+
+    <button mat-flat-button id="submit-settings-btn" (click)="submitSettings()">Submit</button>
+  </div>
+</div>
+
