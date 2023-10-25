@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { WeatherModel } from 'src/app/models/weather.model';
 import { WeatherService } from 'src/app/services/weather.service.ts.service';
+import { WeatherToImageConverter } from 'src/app/utils/convertors/weather-to-image.converter';
 import { WeatherMapper } from 'src/app/utils/mappers/weather.mapper';
 
 @Component({
@@ -26,5 +27,9 @@ export class WeatherComponent {
     }, error => {
       console.log('ERROR: ' +  JSON.stringify(error));
     })
+  }
+
+  public convertToWeatherImage(): string {
+    return WeatherToImageConverter.convert(this.weather.text);
   }
 }

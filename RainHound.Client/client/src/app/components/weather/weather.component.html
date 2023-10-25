@@ -11,7 +11,7 @@
       <p>Pressure: <span>{{ weather.pressureMb }} mb / {{ weather.pressureIn }} in</span></p>
     </div>
     <div id="weather-image-wrapper">
-      <img src="assets/partly cloudy.png" id="weather-image"/>
+      <img src="assets/{{convertToWeatherImage()}}.png" id="weather-image"/>
     </div>
   </div>
 </div>
