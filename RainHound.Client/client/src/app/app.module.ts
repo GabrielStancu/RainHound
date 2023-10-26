@@ -17,6 +17,8 @@ import { NavbarComponent } from './components/shared/navbar/navbar.component';
 import { FooterComponent } from './components/shared/footer/footer.component';
 import { ForecastComponent } from './components/forecast/forecast.component';
 import { SettingsComponent } from './components/settings/settings.component';
+import { GeneralSettingsComponent } from './components/settings/general-settings/general-settings.component';
+import { AlertSettingsComponent } from './components/settings/alert-settings/alert-settings.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +27,9 @@ import { SettingsComponent } from './components/settings/settings.component';
     NavbarComponent,
     FooterComponent,
     ForecastComponent,
-    SettingsComponent
+    SettingsComponent,
+    GeneralSettingsComponent,
+    AlertSettingsComponent
   ],
   imports: [
     BrowserModule,

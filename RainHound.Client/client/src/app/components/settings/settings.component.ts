@@ -16,19 +16,5 @@ export class SettingsComponent {
     this.email = localStorage.getItem('rainhound-email') ?? "";
   }
 
-  public submitSettings() {
-    if (this.city != "") {
-      localStorage.setItem('rainhound-city', this.city);
-    }
-
-    if (this.forecastDays > 0) {
-      localStorage.setItem('rainhound-forecast-days', this.forecastDays.toString());
-    }
-
-    if (this.email != "") {
-      localStorage.setItem('rainhound-email', this.email);
-    }
-
-    alert("settings saved!");
-  }
+  
 }
