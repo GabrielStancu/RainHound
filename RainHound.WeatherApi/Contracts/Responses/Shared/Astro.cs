@@ -20,7 +20,7 @@ public class Astro
     public string MoonPhase { get; set; } = string.Empty;
 
     [JsonPropertyName("moon_illumination")]
-    public string MoonIllumination { get; set; } = string.Empty;
+    public int MoonIllumination { get; set; }
 
     [JsonPropertyName("is_moon_up")]
     public int IsMoonUp { get; set; }
