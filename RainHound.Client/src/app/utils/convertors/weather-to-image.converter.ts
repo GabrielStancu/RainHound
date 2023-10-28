@@ -15,6 +15,8 @@ export class WeatherToImageConverter {
         return 'cloudy'
       case 'Patchy rain possible':
         return 'rain';
+      case 'Fog':
+        return 'cloudy';
       default:
         return 'unknown';
     }
