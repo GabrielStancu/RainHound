@@ -20,3 +20,15 @@
 .submit-settings-btn:hover {
   background-color: #1a120e !important;
 }
+
+.settings-panel{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.settings-column {
+  margin-left: 10px;
+  margin-right: 10px;
+}

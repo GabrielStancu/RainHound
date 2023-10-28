@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 
@@ -15,12 +15,10 @@ export class GeneralSettingsComponent {
   ngOnInit() {
     const city = localStorage.getItem('rainhound-city') ?? '';
     const forecastDays = Number(localStorage.getItem('rainhound-forecast-days') ?? '1');
-    const email = localStorage.getItem('rainhound-email') ?? '';
 
     this.generalSettingsForm = new FormGroup({
       forecastDays: new FormControl(forecastDays, [Validators.required, Validators.min(1), Validators.max(3)]),
-      city: new FormControl(city, [Validators.required]),
-      email: new FormControl(email, [Validators.required, Validators.email])
+      city: new FormControl(city, [Validators.required])
     });
   }
 
@@ -35,7 +33,6 @@ export class GeneralSettingsComponent {
   private submitSettings = (settingsFormValue: any) => {
     localStorage.setItem('rainhound-city', settingsFormValue.city);
     localStorage.setItem('rainhound-forecast-days', settingsFormValue.forecastDays);
-    localStorage.setItem('rainhound-email', settingsFormValue.email);
 
     this.toastr.success("Settings Saved!");
   }
