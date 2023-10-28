@@ -1,17 +1,9 @@
-<h2>Forecast</h2>
-<div *ngFor="let hour of forecast.hours">
-  <p>Time: {{ hour.time }}</p>
-  <p>Temperature (C): {{ hour.tempC }}</p>
-  <p>Temperature (F): {{ hour.tempF }}</p>
-  <p>Condition: {{ hour.condition }}</p>
-  <p>Wind (kph): {{ hour.windKph }}</p>
-  <p>Wind (mph): {{ hour.windMph }}</p>
-  <p>Pressure (mb): {{ hour.pressureMb }}</p>
-  <p>Pressure (in): {{ hour.pressureIn }}</p>
-  <p>Precipitation (mm): {{ hour.precipMm }}</p>
-  <p>Precipitation (in): {{ hour.precipIn }}</p>
-  <p>Humidity: {{ hour.humidity }}</p>
-  <p>Cloud: {{ hour.cloud }}</p>
-  <p>Will rain: {{ hour.willRain }}</p>
-  <p>Chance of rain: {{ hour.chanceOfRain }}</p>
+<div id="forecastChart">
+  <canvas baseChart width="400" height="400"
+    [type]="'line'"
+    [data]="lineChartData"
+    [options]="lineChartOptions"
+    [legend]="lineChartLegend">
+  </canvas>
 </div>
+
