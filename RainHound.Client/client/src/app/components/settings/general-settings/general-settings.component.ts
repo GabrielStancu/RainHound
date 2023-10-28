@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-general-settings',
@@ -9,6 +10,14 @@ export class GeneralSettingsComponent {
   public city = "";
   public forecastDays : number = 1;
   public email = "";
+
+  public constructor(private toastr: ToastrService) {}
+
+  ngOnInit() {
+    this.city = localStorage.getItem('rainhound-city') ?? "";
+    this.forecastDays = Number(localStorage.getItem('rainhound-forecast-days') ?? "1");
+    this.email = localStorage.getItem('rainhound-email') ?? "";
+  }
 
   public submitSettings() {
     if (this.city != "") {
@@ -23,6 +32,6 @@ export class GeneralSettingsComponent {
       localStorage.setItem('rainhound-email', this.email);
     }
 
-    alert("settings saved!");
+    this.toastr.success("Settings Saved!");
   }
 }

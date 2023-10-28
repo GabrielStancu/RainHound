@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
+import { ForecastModel } from 'src/app/models/forecast.model';
 import { WeatherService } from 'src/app/services/weather.service.ts.service';
+import { ForecastMapper } from 'src/app/utils/mappers/forecast.mapper';
 
 @Component({
   selector: 'app-forecast',
@@ -7,25 +9,16 @@ import { WeatherService } from 'src/app/services/weather.service.ts.service';
   styleUrls: ['./forecast.component.css']
 })
 export class ForecastComponent {
-  // Forecast data (you can replace this with your actual data)
-  forecastData = [
-    { name: 'Next Hour', temperature: 22, wind: 12, humidity: 45 },
-    { name: 'Next 2 Hours', temperature: 23, wind: 15, humidity: 40 }
-    // Add more forecast data as needed
-  ];
+  public forecast: ForecastModel = new ForecastModel();
 
   constructor (private weatherService: WeatherService) { }
-
-  convertToCelsius(fahrenheit: number): number {
-    return ((fahrenheit - 32) * 5) / 9;
-  }
 
   ngOnInit() {
     const city = localStorage.getItem('rainhound-city') ?? 'London';
     const forecastDays = Number(localStorage.getItem('rainhound-forecast-days') ?? '1') ?? 1;
-    
+
     this.weatherService.getForecast(city, forecastDays).subscribe(resp => {
-      console.log('Forecast:' + JSON.stringify(resp));
+      this.forecast = ForecastMapper.map(resp);
     }, error => {
       console.log('ERROR: ' +  JSON.stringify(error));
     })
