@@ -10,47 +10,31 @@ import { ForecastMapper } from 'src/app/utils/mappers/forecast.mapper';
   styleUrls: ['./forecast.component.css']
 })
 export class ForecastComponent {
+  public labels: string[] = [];
+  public temperature: number[] = [];
+  public precipitation: number[] = [];
+  public humidity: number[] = [];
+  public chanceOfRain: number[] = [];
+
+  public city: string = "";
+  public forecastDays : number = 1;
+
   constructor (private weatherService: WeatherService) { }
 
   ngOnInit() {
-    const city = localStorage.getItem('rainhound-city') ?? 'London';
-    const forecastDays = Number(localStorage.getItem('rainhound-forecast-days') ?? '1') ?? 1;
+    this.city = localStorage.getItem('rainhound-city') ?? 'London';
+    this.forecastDays = Number(localStorage.getItem('rainhound-forecast-days') ?? '1') ?? 1;
 
-    this.weatherService.getForecast(city, forecastDays).subscribe(resp => {
+    this.weatherService.getForecast(this.city, this.forecastDays).subscribe(resp => {
       const forecast = ForecastMapper.map(resp);
-      this.lineChartData = {
-        labels: forecast.hours.map(hour => hour.time),
-        datasets: [
-          {
-            data: forecast.hours.map(hour => hour.tempC),
-            label: 'Temperature ' + city + ' (' + forecastDays + ' days)',
-            fill: true,
-            tension: 0.5,
-            borderColor: 'black',
-            backgroundColor: 'rgba(255,0,0,0.3)'
-          }
-        ]
-      }
+
+      this.labels = forecast.hours.map(f => f.time);
+      this.temperature = forecast.hours.map(f => f.tempC);
+      this.precipitation = forecast.hours.map(f => f.precipMm);
+      this.humidity = forecast.hours.map(f => f.humidity);
+      this.chanceOfRain = forecast.hours.map(f => f.chanceOfRain);
     }, error => {
       console.log('ERROR: ' +  JSON.stringify(error));
     })
   }
-
-  public lineChartData: ChartConfiguration<'line'>['data'] = {
-    labels: [],
-    datasets: [
-      {
-        data: [],
-        label: '',
-        fill: true,
-        tension: 0.5,
-        borderColor: 'black',
-        backgroundColor: 'rgba(255,0,0,0.3)'
-      }
-    ]
-  };
-  public lineChartOptions: ChartOptions<'line'> = {
-    responsive: true
-  };
-  public lineChartLegend = true;
 }

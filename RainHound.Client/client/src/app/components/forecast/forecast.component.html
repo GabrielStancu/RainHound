@@ -1,9 +1,9 @@
-<div id="forecastChart">
-  <canvas baseChart width="400" height="400"
-    [type]="'line'"
-    [data]="lineChartData"
-    [options]="lineChartOptions"
-    [legend]="lineChartLegend">
-  </canvas>
+<div id="forecastPageWrapper">
+  <div id="forecastPageTitle">Forecast - {{city}} ( {{forecastDays}} days)</div>
+  <div id="forecastChartWrapper">
+    <app-forecast-graph *ngIf="temperature.length > 0" [labels]="labels" [data]="temperature" [title]="'Temperature (°C)'"/>
+    <app-forecast-graph *ngIf="precipitation.length > 0" [labels]="labels" [data]="precipitation" [title]="'Precipitation (mm)'"/>
+    <app-forecast-graph *ngIf="humidity.length > 0" [labels]="labels" [data]="humidity" [title]="'Humidity (%)'"/>
+    <app-forecast-graph *ngIf="chanceOfRain.length > 0" [labels]="labels" [data]="chanceOfRain" [title]="'Chance of Rain (%)'"/>
+  </div>
 </div>
-

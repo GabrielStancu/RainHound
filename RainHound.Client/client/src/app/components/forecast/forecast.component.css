@@ -1,5 +1,19 @@
-#forecastChart {
-  display: block;
+#forecastPageWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 30px;
+}
+
+#forecastPageTitle {
+  font-size: 36px;
+}
+
+#forecastChartWrapper {
+  display: flex;
   width: 100%;
   height: 60vh;
+  align-items: center;
+  justify-content: space-evenly;
 }

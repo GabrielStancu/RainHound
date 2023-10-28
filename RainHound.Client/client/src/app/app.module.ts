@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { ToastrModule } from 'ngx-toastr';
 import { NgChartsModule } from 'ng2-charts';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatMenuModule } from '@angular/material/menu';
@@ -21,6 +22,7 @@ import { ForecastComponent } from './components/forecast/forecast.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { GeneralSettingsComponent } from './components/settings/general-settings/general-settings.component';
 import { AlertSettingsComponent } from './components/settings/alert-settings/alert-settings.component';
+import { ForecastGraphComponent } from './components/forecast/forecast-graph/forecast-graph.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +33,8 @@ import { AlertSettingsComponent } from './components/settings/alert-settings/ale
     ForecastComponent,
     SettingsComponent,
     GeneralSettingsComponent,
-    AlertSettingsComponent
+    AlertSettingsComponent,
+    ForecastGraphComponent
   ],
   imports: [
     BrowserModule,
@@ -41,6 +44,7 @@ import { AlertSettingsComponent } from './components/settings/alert-settings/ale
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
     NgChartsModule,
+    ReactiveFormsModule,
     MatMenuModule,
     MatIconModule,
     MatButtonModule,
