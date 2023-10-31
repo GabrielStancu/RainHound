@@ -34,6 +34,12 @@
             "netCore": {
                 "appProject": "${workspaceFolder}/RainHound.WeatherApi/RainHound.WeatherApi.csproj"
             }
+        },
+        {
+            "name": "Attach to .NET Functions",
+            "type": "coreclr",
+            "request": "attach",
+            "processId": "${command:azureFunctions.pickProcess}"
         }
     ]
 }
