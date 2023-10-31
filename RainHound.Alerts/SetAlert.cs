@@ -6,8 +6,8 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
 using RainHound.Alerts.Business.Mappers;
-using RainHound.Alerts.Business.Services;
-using RainHound.Alerts.Requests;
+using RainHound.Alerts.Business.Services.Interfaces;
+using RainHound.Alerts.Models;
 
 namespace RainHound.Alerts;
 
@@ -31,14 +31,14 @@ public class SetAlert
         var content = await req.ReadAsStringAsync() ?? string.Empty;
         _logger.LogInformation($"Received request <{content}>");
 
-        var setAlertRequest = JsonSerializer.Deserialize<SetAlertRequest>(content);
+        var setAlertRequest = JsonSerializer.Deserialize<AlertModel>(content);
         if (setAlertRequest is null)
         {
             _logger.LogError("Received invalid request!");
             return req.CreateResponse(HttpStatusCode.BadRequest);
         }
 
-        var alertEntity = AlertEntityMapper.Map(setAlertRequest);
+        var alertEntity = AlertEntityMapper.MapToEntity(setAlertRequest);
         var response = await _alertsTableStorageService.UpsertAlertAsync(alertEntity);
 
         if (response.IsError)
@@ -47,7 +47,7 @@ public class SetAlert
             return req.CreateResponse(HttpStatusCode.BadRequest);
         }
 
-        _logger.LogError("Successfully set the alert");
+        _logger.LogInformation("Successfully set the alert");
         return req.CreateResponse(HttpStatusCode.OK);
     }
 }

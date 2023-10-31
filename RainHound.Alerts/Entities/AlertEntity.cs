@@ -8,6 +8,7 @@ public class AlertEntity : ITableEntity
     public int? MinTemp { get; set; }
     public int? MaxTemp { get; set; }
     public int? ChancesOfRain { get; set; }
+    public string? City { get; set; }
 
     public string? PartitionKey { get; set; }
     public string? RowKey { get; set; }

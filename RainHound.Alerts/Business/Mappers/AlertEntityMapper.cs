@@ -1,17 +1,28 @@
 ﻿using RainHound.Alerts.Entities;
-using RainHound.Alerts.Requests;
+using RainHound.Alerts.Models;
 
 namespace RainHound.Alerts.Business.Mappers;
 public class AlertEntityMapper
 {
-    public static AlertEntity Map(SetAlertRequest request) 
-        => new AlertEntity
+    public static AlertEntity MapToEntity(AlertModel model) 
+        => new()
         {
-            Email = request.Email,
-            MinTemp = request.MinTemp,
-            MaxTemp = request.MaxTemp,
-            ChancesOfRain = request.ChancesOfRain,
-            PartitionKey = request.Email,
+            Email = model.Email,
+            MinTemp = model.MinTemp,
+            MaxTemp = model.MaxTemp,
+            ChancesOfRain = model.ChancesOfRain,
+            City = model.City,
+            PartitionKey = model.City,
             RowKey = Guid.NewGuid().ToString()
+        };
+
+    public static AlertModel MapToAlert(AlertEntity entity)
+        => new()
+        {
+            Email = entity.Email,
+            MinTemp = entity.MinTemp,
+            MaxTemp = entity.MaxTemp,
+            ChancesOfRain = entity.ChancesOfRain,
+            City = entity.City,
         };
 }
