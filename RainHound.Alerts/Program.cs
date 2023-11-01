@@ -9,6 +9,7 @@ var host = new HostBuilder()
     .ConfigureFunctionsWorkerDefaults()
     .ConfigureServices((ctx, s) =>
     {
+        s.AddHttpClient("WeatherApi", );
         s.AddScoped<IAlertsTableStorageService, AlertsTableStorageService>();
         s.AddScoped<IAlertsProcessor, AlertsProcessor>();
         s.AddScoped<IAlertsChecker, AlertsChecker>();
