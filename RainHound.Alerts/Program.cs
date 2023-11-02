@@ -15,12 +15,7 @@ var host = new HostBuilder()
         s.AddScoped<IAlertsChecker, AlertsChecker>();
         s.AddScoped<IEmailSender, EmailSender>();
         s.AddScoped<IForecastService, ForecastService>();
-        s.AddAzureClients(b =>
-        {
-            b.AddClient<TableClient, TableClientOptions>((_, _, _) => 
-                new TableClient(ctx.Configuration["AlertsStorage:ConnectionString"],
-                    ctx.Configuration["AlertsStorage:TableStorage"]));
-        });
+        //
     })
     .Build();
 
