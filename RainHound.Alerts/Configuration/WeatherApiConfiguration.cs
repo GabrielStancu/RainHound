@@ -2,7 +2,7 @@
 
 public class WeatherApiConfiguration
 {
-    public static string? SectionName { get; set; }
-    public static string? ClientName { get; set; }
+    public const string SectionName = "WeatherApi";
+    public const string ClientName = "WeatherApi";
     public string? Url { get; set; }
 }
