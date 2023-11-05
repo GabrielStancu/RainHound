@@ -10,14 +10,12 @@ var host = new HostBuilder()
     .ConfigureServices((ctx, s) =>
     {
         s.AddConfiguration<WeatherApiConfiguration>("WeatherApi");
-        s.AddConfiguration<AlertsStorageConfiguration>("AlertsStorage");
-        s.AddScoped<IAlertsTableStorageService, AlertsTableStorageService>();
+        s.AddConfiguration<TableStorageConfiguration>("TableStorage");
         s.AddScoped<IAlertsProcessor, AlertsProcessor>();
         s.AddScoped<IAlertsChecker, AlertsChecker>();
         s.AddScoped<IEmailSender, EmailSender>();
         s.AddScoped<IForecastService, ForecastService>();
         s.AddWeatherApiHttpClient();
-        s.AddAlertsTableAzureClient();
     })
     .Build();
 

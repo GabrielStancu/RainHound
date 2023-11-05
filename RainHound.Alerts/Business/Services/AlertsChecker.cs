@@ -44,7 +44,11 @@ public class AlertsChecker : IAlertsChecker
             }
         }
 
-        return alerts;
+        var groupedAlerts = GroupConsecutiveAlerts(alerts);
+
+        _logger.LogInformation($"Alerts after grouping: {JsonSerializer.Serialize(groupedAlerts)}");
+
+        return groupedAlerts;
     }
 
     private void CheckAlertThresholdForHour(AlertModel alertThreshold, Hour hour, List<FoundAlertModel> alerts)
@@ -71,7 +75,7 @@ public class AlertsChecker : IAlertsChecker
         {
             City = alertThreshold.City,
             Email = alertThreshold.Email,
-            Hour = DateTime.Parse(hour.Time),
+            StartHour = DateTime.Parse(hour.Time),
             Threshold = alertThreshold.ChancesOfRain ?? double.NegativeZero,
             Value = hour.ChanceOfRain
         };
@@ -86,7 +90,7 @@ public class AlertsChecker : IAlertsChecker
         {
             City = alertThreshold.City,
             Email = alertThreshold.Email,
-            Hour = DateTime.Parse(hour.Time),
+            StartHour = DateTime.Parse(hour.Time),
             Threshold = alertThreshold.MinTemp ?? double.NegativeZero,
             Value = hour.TempC
         };
@@ -97,16 +101,52 @@ public class AlertsChecker : IAlertsChecker
 
     private void AddMaxTempAlert(AlertModel alertThreshold, Hour hour, List<FoundAlertModel> alerts)
     {
-        var alert = new MinTempFoundAlertModel
+        var alert = new MaxTempFoundAlertModel
         {
             City = alertThreshold.City,
             Email = alertThreshold.Email,
-            Hour = DateTime.Parse(hour.Time),
+            StartHour = DateTime.Parse(hour.Time),
             Threshold = alertThreshold.MaxTemp ?? double.NegativeZero,
             Value = hour.TempC
         };
 
         _logger.LogInformation($"Found max temp alert: {JsonSerializer.Serialize(alert)}");
         alerts.Add(alert);
+    }
+
+    private static List<FoundAlertModel> GroupConsecutiveAlerts(List<FoundAlertModel> alerts)
+    {
+        var chanceOfRainAlerts = GroupAlertsByType<ChancesOfRainFoundAlertModel>(alerts);
+        var minTempAlerts = GroupAlertsByType<MinTempFoundAlertModel>(alerts);
+        var maxTempAlerts = GroupAlertsByType<MaxTempFoundAlertModel>(alerts);
+
+        return chanceOfRainAlerts
+            .Concat(minTempAlerts)
+            .Concat(maxTempAlerts)
+            .ToList();
+    }
+
+    private static IEnumerable<FoundAlertModel> GroupAlertsByType<T>(List<FoundAlertModel> alerts) where T : FoundAlertModel
+    {
+        var groupedAlerts = alerts
+            .Where(a => a is T)
+            .GroupBy(a => new
+            {
+                a.City,
+                a.Email
+            })
+            .Select(g =>
+                (g.ToList().FirstOrDefault(), g.ToList().LastOrDefault()))
+            .Select(p =>
+            {
+                if (p.Item1 is null || p.Item2 is null)
+                    return null;
+
+                p.Item1.EndHour = p.Item2.StartHour;
+                return p.Item1;
+            })
+            .Where(a => a != null);
+
+        return groupedAlerts!;
     }
 }

@@ -1,14 +1,14 @@
-﻿using Azure;
-using Azure.Data.Tables;
+﻿using Azure.Data.Tables;
+using Azure;
 
 namespace RainHound.Alerts.Entities;
-public class AlertEntity : ITableEntity
+
+public class EmailEntity : ITableEntity
 {
     public string? Email { get; set; }
-    public double? MinTemp { get; set; }
-    public double? MaxTemp { get; set; }
-    public double? ChancesOfRain { get; set; }
     public string? City { get; set; }
+    public string? Description { get; set; }
+    public DateTime Date { get; set; }
 
     public string? PartitionKey { get; set; }
     public string? RowKey { get; set; }

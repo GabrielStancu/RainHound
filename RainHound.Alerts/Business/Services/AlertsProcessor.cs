@@ -52,7 +52,7 @@ public class AlertsProcessor : IAlertsProcessor
             if (string.IsNullOrEmpty(alertsGroup.Key))
                 continue;
 
-            _logger.LogInformation($"Sending email alerts to {alertsGroup.Key}");
+            _logger.LogInformation($"Preparing email alerts to be sent to {alertsGroup.Key}");
             await _emailSender.SendEmailAsync(alertsGroup.Key, alertsGroup.ToList());
         }
     }
