@@ -4,5 +4,5 @@ namespace RainHound.Alerts.Business.Services.Interfaces;
 
 public interface IForecastService
 {
-    Task<ForecastResponse> GetForecastAsync(ForecastRequestModel forecastRequest);
+    Task<ForecastResponse?> GetForecastAsync(ForecastRequestModel forecastRequest);
 }

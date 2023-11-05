@@ -5,5 +5,5 @@ namespace RainHound.Alerts.Business.Services.Interfaces;
 
 public interface IAlertsChecker
 {
-    Task<List<FoundAlertModel>> CheckAlertsAsync(ForecastResponse forecast, IEnumerable<AlertModel> alertThresholds);
+    List<FoundAlertModel> CheckAlerts(ForecastResponse forecast, IEnumerable<AlertModel> alertThresholds);
 }

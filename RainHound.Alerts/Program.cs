@@ -9,8 +9,8 @@ var host = new HostBuilder()
     .ConfigureFunctionsWorkerDefaults()
     .ConfigureServices((ctx, s) =>
     {
-        s.AddConfiguration<WeatherApiConfiguration>(WeatherApiConfiguration.SectionName);
-        s.AddConfiguration<AlertsStorageConfiguration>(WeatherApiConfiguration.SectionName);
+        s.AddConfiguration<WeatherApiConfiguration>("WeatherApi");
+        s.AddConfiguration<AlertsStorageConfiguration>("AlertsStorage");
         s.AddScoped<IAlertsTableStorageService, AlertsTableStorageService>();
         s.AddScoped<IAlertsProcessor, AlertsProcessor>();
         s.AddScoped<IAlertsChecker, AlertsChecker>();

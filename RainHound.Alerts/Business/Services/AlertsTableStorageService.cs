@@ -49,7 +49,7 @@ public class AlertsTableStorageService : IAlertsTableStorageService
             return;
         }
 
-        _logger.LogWarning($"Found alert with row key {alert.RowKey} for city {alert.City}");
+        _logger.LogInformation($"Found alert with row key {alert.RowKey} for city {alert.City}");
 
         if (cityAlerts.ContainsKey(alert.City))
         {

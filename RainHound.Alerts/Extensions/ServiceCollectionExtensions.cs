@@ -46,7 +46,6 @@ public static class ServiceCollectionExtensions
         services.AddHttpClient(WeatherApiConfiguration.ClientName, httpClient =>
         {
             httpClient.BaseAddress = new Uri(configuration.Url);
-            httpClient.DefaultRequestHeaders.Add("Content-Type", "application/json");
         });
     }
 

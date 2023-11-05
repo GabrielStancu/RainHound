@@ -1,22 +1,38 @@
 ﻿using RainHound.Alerts.Business.Services.Interfaces;
+using RainHound.Alerts.Configuration;
 using RainHound.Alerts.Models;
+using System.Net.Http;
+using System.Text.Json;
+using Microsoft.Extensions.Logging;
 
 namespace RainHound.Alerts.Business.Services;
 public class ForecastService : IForecastService
 {
-    public ForecastService() // inject HttpClient, configs to call the api
+    private readonly IHttpClientFactory _clientFactory;
+    private readonly ILogger<ForecastService> _logger;
+
+    public ForecastService(IHttpClientFactory clientFactory, ILogger<ForecastService> logger)
     {
-        
+        _clientFactory = clientFactory;
+        _logger = logger;
     }
 
-    public async Task<ForecastResponse> GetForecastAsync(ForecastRequestModel forecastRequest)
+    public async Task<ForecastResponse?> GetForecastAsync(ForecastRequestModel forecastRequest)
     {
-        var response = new ForecastResponse();
+        var client = _clientFactory.CreateClient(WeatherApiConfiguration.ClientName);
+        var forecastUri = ForecastRequestUri(forecastRequest);
+        var response = await client.GetAsync(forecastUri);
+        ForecastResponse? forecastResponse = null;
 
-        await Task.Delay(10);
+        if (response.IsSuccessStatusCode)
+        {
+            await using var contentStream = await response.Content.ReadAsStreamAsync();
+            forecastResponse = await JsonSerializer.DeserializeAsync<ForecastResponse>(contentStream);
+        }
 
-        // call the api, return that response
-
-        return response;
+        return forecastResponse;
     }
+
+    private string ForecastRequestUri(ForecastRequestModel request) =>
+        $"api/Weather/forecast?city={request.City}&aqi={request.Aqi}&days={request.Days}";
 }

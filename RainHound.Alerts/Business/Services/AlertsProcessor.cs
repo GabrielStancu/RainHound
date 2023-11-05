@@ -22,18 +22,24 @@ public class AlertsProcessor : IAlertsProcessor
         _logger = logger;
     }
 
-    public async Task<List<FoundAlertModel>> GetAlertsForCityAsync(string city, IEnumerable<AlertModel> alertEntities)
+    public async Task<List<FoundAlertModel>> GetAlertsForCityAsync(string city, IEnumerable<AlertModel> alertsForCity)
     {
         _logger.LogInformation($"Fetching forecast data for city {city}");
 
         var forecastModel = new ForecastRequestModel { City = city };
         var forecastResponse = await _forecastService.GetForecastAsync(forecastModel);
 
+        if (forecastResponse is null)
+        {
+            _logger.LogError($"Error while fetching forecast for {city}");
+            return Enumerable.Empty<FoundAlertModel>().ToList();
+        }
+
         _logger.LogInformation("Fetched forecast data. Checking for alerts thresholds...");
 
-        var foundAlerts = await _alertsChecker.CheckAlertsAsync(forecastResponse, alertEntities);
+        var foundAlerts = _alertsChecker.CheckAlerts(forecastResponse, alertsForCity);
 
-        _logger.LogInformation($"Found alerts: {foundAlerts.Count}");
+        _logger.LogInformation($"Found alerts for city {city}: {foundAlerts.Count}");
 
         return foundAlerts;
     }
