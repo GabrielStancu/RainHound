@@ -12,8 +12,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<IWeatherService, WeatherService>();
 builder.Services.AddConfiguration<WeatherApiConfiguration>(builder.Configuration, WeatherApiConfiguration.SectionName);
 builder.Services.AddConfiguration<EnvironmentConfiguration>(builder.Configuration, EnvironmentConfiguration.SectionName);
-builder.Services.AddConfiguration<ClientConfiguration>(builder.Configuration, EnvironmentConfiguration.SectionName);
-builder.Services.AddConfiguration<AlertsFunctionConfiguration>(builder.Configuration, EnvironmentConfiguration.SectionName);
+builder.Services.AddConfiguration<ClientConfiguration>(builder.Configuration, ClientConfiguration.SectionName);
+builder.Services.AddConfiguration<AlertsFunctionConfiguration>(builder.Configuration, AlertsFunctionConfiguration.SectionName);
 builder.Services.AddCorsPolicies();
 
 var app = builder.Build();

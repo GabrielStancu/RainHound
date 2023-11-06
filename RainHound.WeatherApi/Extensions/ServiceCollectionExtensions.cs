@@ -11,7 +11,7 @@ public static class ServiceCollectionExtensions
 
         if (section is null)
         {
-            throw new ArgumentException($"[G] Section {sectionName} not configured!");
+            throw new ArgumentException($"Section {sectionName} not configured!");
         }
 
         services.AddSingleton(section);
@@ -24,9 +24,12 @@ public static class ServiceCollectionExtensions
         var clientConfiguration = scope.ServiceProvider.GetService<ClientConfiguration>();
         var alertsFunctionConfiguration = scope.ServiceProvider.GetService<AlertsFunctionConfiguration>();
 
-        if (string.IsNullOrEmpty(clientConfiguration?.BaseUrl) ||
-            string.IsNullOrEmpty(alertsFunctionConfiguration?.BaseUrl))
-            throw new ArgumentException("Client or Alerts Function configuration not set!");
+        if (string.IsNullOrEmpty(clientConfiguration?.BaseUrl))
+            throw new ArgumentException("Client configuration not set!");
+
+        if (string.IsNullOrEmpty(alertsFunctionConfiguration?.BaseUrl))
+            throw new ArgumentException("Alerts Function configuration not set!");
+
 
         services.AddCors(options =>
         {
