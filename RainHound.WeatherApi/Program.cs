@@ -1,3 +1,4 @@
+using RainHound.WeatherApi.Business;
 using RainHound.WeatherApi.Configuration;
 using RainHound.WeatherApi.Extensions;
 using RainHound.WeatherApi.Services;
@@ -7,19 +8,13 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy(name: "AllowClient",
-                      policy  =>
-                      {
-                        string clientUrl = builder.Configuration.GetSection("Client")["BaseUrl"]!;
-                        policy.WithOrigins(clientUrl).AllowAnyHeader().AllowAnyMethod();
-                      });
-});
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<IWeatherService, WeatherService>();
 builder.Services.AddConfiguration<WeatherApiConfiguration>(builder.Configuration, WeatherApiConfiguration.SectionName);
 builder.Services.AddConfiguration<EnvironmentConfiguration>(builder.Configuration, EnvironmentConfiguration.SectionName);
+builder.Services.AddConfiguration<ClientConfiguration>(builder.Configuration, EnvironmentConfiguration.SectionName);
+builder.Services.AddConfiguration<AlertsFunctionConfiguration>(builder.Configuration, EnvironmentConfiguration.SectionName);
+builder.Services.AddCorsPolicies();
 
 var app = builder.Build();
 
@@ -31,7 +26,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseCors("AllowClient");
+app.UseCors(Constants.Cors.ClientPolicy);
+app.UseCors(Constants.Cors.AlertsFunctionPolicy);
 app.UseAuthorization();
 app.MapControllers();
 
