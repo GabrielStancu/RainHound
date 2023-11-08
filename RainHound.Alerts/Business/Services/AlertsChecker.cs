@@ -142,7 +142,7 @@ public class AlertsChecker : IAlertsChecker
                 if (p.Item1 is null || p.Item2 is null)
                     return null;
 
-                p.Item1.EndHour = p.Item2.StartHour;
+                p.Item1.EndHour = p.Item2.StartHour.AddHours(1);
                 return p.Item1;
             })
             .Where(a => a != null);

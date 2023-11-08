@@ -6,7 +6,8 @@ namespace RainHound.Alerts.Business.Mappers;
 public class EmailEntityMapper
 {
     public static EmailEntity MapToEntity(FoundAlertModel model)
-        => new()
+    {
+        var entity = new EmailEntity
         {
             Email = model.Email,
             City = model.City,
@@ -17,4 +18,10 @@ public class EmailEntityMapper
             RowKey = Guid.NewGuid().ToString(),
             IsInError = false
         };
+
+        entity.StartDate = DateTime.SpecifyKind(entity.StartDate, DateTimeKind.Utc);
+        entity.EndDate = DateTime.SpecifyKind(entity.EndDate, DateTimeKind.Utc);
+
+        return entity;
+    }
 }

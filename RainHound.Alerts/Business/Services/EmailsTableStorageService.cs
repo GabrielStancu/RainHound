@@ -21,7 +21,8 @@ public class EmailsTableStorageService : IEmailsTableStorageService
     {
         await InitTableClientAsync();
         var tableEmails = _tableClient!
-            .QueryAsync<EmailEntity>(e => IsEmailSent(e, emailEntity));
+            .QueryAsync<EmailEntity>(e => 
+                e.Email != emailEntity.Email && e.StartDate != emailEntity.StartDate && e.City != emailEntity.City);
 
         await foreach (var emails in tableEmails.AsPages())
         {
@@ -50,14 +51,4 @@ public class EmailsTableStorageService : IEmailsTableStorageService
         _tableClient = serviceClient.GetTableClient(TableName);
         await _tableClient.CreateIfNotExistsAsync();
     }
-
-    private bool IsEmailSent(EmailEntity storedEmailEntity, EmailEntity newEmailEntity) =>
-        !string.IsNullOrEmpty(storedEmailEntity.City) && 
-        storedEmailEntity.City.Equals(newEmailEntity.City, StringComparison.OrdinalIgnoreCase) &&
-        !string.IsNullOrEmpty(storedEmailEntity.Email) && 
-        storedEmailEntity.Email.Equals(newEmailEntity.Email, StringComparison.OrdinalIgnoreCase) &&
-        !string.IsNullOrEmpty(storedEmailEntity.Description) && 
-        storedEmailEntity.Description.Equals(newEmailEntity.Description, StringComparison.OrdinalIgnoreCase) &&
-        storedEmailEntity.StartDate.Equals(newEmailEntity.StartDate) &&
-        storedEmailEntity.EndDate.Equals(newEmailEntity.EndDate);
 }
