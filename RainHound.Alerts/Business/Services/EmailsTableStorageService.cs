@@ -58,5 +58,6 @@ public class EmailsTableStorageService : IEmailsTableStorageService
         storedEmailEntity.Email.Equals(newEmailEntity.Email, StringComparison.OrdinalIgnoreCase) &&
         !string.IsNullOrEmpty(storedEmailEntity.Description) && 
         storedEmailEntity.Description.Equals(newEmailEntity.Description, StringComparison.OrdinalIgnoreCase) &&
-        storedEmailEntity.Date.Date.Equals(newEmailEntity.Date.Date);
+        storedEmailEntity.StartDate.Equals(newEmailEntity.StartDate) &&
+        storedEmailEntity.EndDate.Equals(newEmailEntity.EndDate);
 }

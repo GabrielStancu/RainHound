@@ -10,9 +10,11 @@ public class EmailEntityMapper
         {
             Email = model.Email,
             City = model.City,
-            Date = DateTime.UtcNow.Date,
+            StartDate = model.StartHour,
+            EndDate = model.EndHour,
             Description = model.Description,
             PartitionKey = model.Email,
-            RowKey = Guid.NewGuid().ToString()
+            RowKey = Guid.NewGuid().ToString(),
+            IsInError = false
         };
 }

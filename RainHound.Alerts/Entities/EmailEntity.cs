@@ -8,7 +8,9 @@ public class EmailEntity : ITableEntity
     public string? Email { get; set; }
     public string? City { get; set; }
     public string? Description { get; set; }
-    public DateTime Date { get; set; }
+    public DateTime StartDate { get; set; }
+    public DateTime EndDate { get; set; }
+    public bool IsInError { get; set; }
 
     public string? PartitionKey { get; set; }
     public string? RowKey { get; set; }
