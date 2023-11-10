@@ -4,6 +4,8 @@ using RainHound.Alerts.Business.Services.Interfaces;
 using RainHound.Alerts.Entities;
 using RainHound.Alerts.Models.FoundAlerts;
 using System.Net.Mail;
+using Azure;
+using Azure.Communication.Email;
 using RainHound.Alerts.Configuration;
 
 namespace RainHound.Alerts.Business.Services;
@@ -42,15 +44,16 @@ public class EmailSender : IEmailSender
 
     private async Task SendEmailAlertAsync(EmailEntity emailAlert)
     {
-        var message = new MailMessage(_alertsConfiguration.FromEmail!, emailAlert.Email!);
-        message.Subject = "Weather Alert";
-        message.Body = $"Alert: {emailAlert.Description}, in {emailAlert.City}. Starts at {emailAlert.StartDate}, ends at {emailAlert.EndDate}.";
-        var client = new SmtpClient("smtp.gmail.com");
-        client.UseDefaultCredentials = true;
+        var emailClient = new EmailClient(_alertsConfiguration.ConnectionString);
+        var emailContent = new EmailContent(_alertsConfiguration.Subject)
+        {
+            PlainText = $"Alert: {emailAlert.Description}, in {emailAlert.City}. Starts at {emailAlert.StartDate}, ends at {emailAlert.EndDate}."
+        };
+        var emailMessage = new EmailMessage(_alertsConfiguration.FromEmail, emailAlert.Email, emailContent);
 
         try
         {
-            await Task.Run(() => client.Send(message));
+            await emailClient.SendAsync(WaitUntil.Completed, emailMessage);
         }
         catch (Exception ex)
         {

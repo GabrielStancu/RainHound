@@ -22,7 +22,7 @@ public class EmailsTableStorageService : IEmailsTableStorageService
         await InitTableClientAsync();
         var tableEmails = _tableClient!
             .QueryAsync<EmailEntity>(e => 
-                e.Email != emailEntity.Email && e.StartDate != emailEntity.StartDate && e.City != emailEntity.City);
+                e.Email != emailEntity.Email && e.StartDate != emailEntity.StartDate && e.City != emailEntity.City && !e.IsInError);
 
         await foreach (var emails in tableEmails.AsPages())
         {
