@@ -4,5 +4,5 @@ namespace RainHound.Alerts.Business.Services.Interfaces;
 
 public interface IEmailSender
 {
-    Task SendEmailAsync(string email, List<FoundAlertModel> foundAlerts);
+    Task SendEmailToUserAsync(List<FoundAlertModel> foundAlerts);
 }

@@ -36,9 +36,7 @@ public class AlertsProcessor : IAlertsProcessor
         }
 
         _logger.LogInformation("Fetched forecast data. Checking for alerts thresholds...");
-
         var foundAlerts = _alertsChecker.CheckAlerts(forecastResponse, alertsForCity);
-
         _logger.LogInformation($"Found alerts for city {city}: {foundAlerts.Count}");
 
         return foundAlerts;
@@ -47,13 +45,14 @@ public class AlertsProcessor : IAlertsProcessor
     public async Task SendAlertsAsync(IEnumerable<FoundAlertModel> emailAlerts)
     {
         var alertsGroupedByEmail = emailAlerts.GroupBy(a => a.Email);
+
         foreach (var alertsGroup in alertsGroupedByEmail)
         {
             if (string.IsNullOrEmpty(alertsGroup.Key))
                 continue;
 
             _logger.LogInformation($"Preparing email alerts to be sent to {alertsGroup.Key}");
-            await _emailSender.SendEmailAsync(alertsGroup.Key, alertsGroup.ToList());
+            await _emailSender.SendEmailToUserAsync(alertsGroup.ToList());
         }
     }
 }

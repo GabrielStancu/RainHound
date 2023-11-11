@@ -24,7 +24,7 @@ public class AlertSender
     }
 
     [Function("AlertSender")]
-    public async Task Run([TimerTrigger("%Alerts:ScheduleCron%")] TimerInfo myTimer)
+    public async Task Run([TimerTrigger("%Alerts:ScheduleCron%", RunOnStartup = false)] TimerInfo myTimer)
     {
         _logger.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
 

@@ -7,5 +7,5 @@ public abstract class FoundAlertModel
     public DateTime EndHour { get; set; }
     public double Threshold { get; set; }
     public double Value { get; set; }
-    public abstract string? Description { get; }
+    public abstract string? Description(double value, double threshold);
 }

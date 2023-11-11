@@ -13,7 +13,7 @@ public class EmailEntityMapper
             City = model.City,
             StartDate = model.StartHour,
             EndDate = model.EndHour,
-            Description = model.Description,
+            Description = model.Description(model.Value, model.Threshold),
             PartitionKey = model.Email,
             RowKey = Guid.NewGuid().ToString(),
             IsInError = false
