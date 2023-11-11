@@ -3,7 +3,6 @@ using RainHound.Alerts.Business.Mappers;
 using RainHound.Alerts.Business.Services.Interfaces;
 using RainHound.Alerts.Entities;
 using RainHound.Alerts.Models.FoundAlerts;
-using System.Net.Mail;
 using Azure;
 using Azure.Communication.Email;
 using RainHound.Alerts.Configuration;
@@ -53,7 +52,9 @@ public class EmailSender : IEmailSender
 
         try
         {
+            _logger.LogInformation($"Sending email alert to {emailAlert.Email} for city {emailAlert.City} for date {emailAlert.StartDate}");
             await emailClient.SendAsync(WaitUntil.Completed, emailMessage);
+            _logger.LogInformation("Email sent");
         }
         catch (Exception ex)
         {
