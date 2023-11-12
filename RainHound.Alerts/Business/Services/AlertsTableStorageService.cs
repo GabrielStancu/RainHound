@@ -51,13 +51,19 @@ public class AlertsTableStorageService : IAlertsTableStorageService
 
     private async Task InitTableClientAsync()
     {
+        _logger.LogInformation($"Initializing table client for {TableName}");
+
         if (_tableClient != null)
+        {
+            _logger.LogInformation("Table already initialized, skipping...");
             return;
+        }
 
         var serviceClient = new TableServiceClient(_configuration.ConnectionString);
-
         _tableClient = serviceClient.GetTableClient(TableName);
         await _tableClient.CreateIfNotExistsAsync();
+
+        _logger.LogInformation($"Created table client for {TableName}");
     }
 
     private void GroupAlertsPageByCity(AlertEntity alert, IDictionary<string, List<AlertEntity>> cityAlerts)

@@ -61,7 +61,8 @@ public class EmailSender : IEmailSender
 
     private async Task SendEmailAlertAsync(List<EmailEntity> emailAlerts)
     {
-        var emailClient = FormatAlertEmail(emailAlerts, out var emailMessage);
+        var emailClient = new EmailClient(_alertsConfiguration.ConnectionString);
+        var emailMessage = FormatAlertEmail(emailAlerts);
 
         try
         {
@@ -78,17 +79,17 @@ public class EmailSender : IEmailSender
         }
     }
 
-    private EmailClient FormatAlertEmail(List<EmailEntity> emailAlerts, out EmailMessage emailMessage)
+    private EmailMessage FormatAlertEmail(List<EmailEntity> emailAlerts)
     {
         var alertMessages = string.Join(Environment.NewLine, emailAlerts.Select(a =>
                 $"\t{a.Description}, in {a.City}. Starts at {a.StartDate}, ends at {a.EndDate}."));
-        var emailClient = new EmailClient(_alertsConfiguration.ConnectionString);
         var emailContent = new EmailContent(_alertsConfiguration.Subject)
         {
             PlainText = $"Alerts:{Environment.NewLine}{alertMessages}"
         };
-        emailMessage = new EmailMessage(_alertsConfiguration.FromEmail, emailAlerts.First().Email, emailContent);
-        return emailClient;
+        var emailMessage = new EmailMessage(_alertsConfiguration.FromEmail, emailAlerts.First().Email, emailContent);
+
+        return emailMessage;
     }
 
     private async Task SetEmailsInErrorAsync(List<EmailEntity> emailAlerts)
