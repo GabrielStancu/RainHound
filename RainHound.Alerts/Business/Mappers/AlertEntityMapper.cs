@@ -7,22 +7,20 @@ public class AlertEntityMapper
     public static AlertEntity MapToEntity(AlertModel model) 
         => new()
         {
-            Email = model.Email,
             MinTemp = model.MinTemp,
             MaxTemp = model.MaxTemp,
             ChancesOfRain = model.ChancesOfRain,
-            City = model.City,
             PartitionKey = model.City,
-            RowKey = Guid.NewGuid().ToString()
+            RowKey = model.Email
         };
 
     public static AlertModel MapToAlert(AlertEntity entity)
         => new()
         {
-            Email = entity.Email,
+            Email = entity.RowKey,
             MinTemp = entity.MinTemp,
             MaxTemp = entity.MaxTemp,
             ChancesOfRain = entity.ChancesOfRain,
-            City = entity.City,
+            City = entity.PartitionKey,
         };
 }

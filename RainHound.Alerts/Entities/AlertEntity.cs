@@ -4,11 +4,9 @@ using Azure.Data.Tables;
 namespace RainHound.Alerts.Entities;
 public class AlertEntity : ITableEntity
 {
-    public string? Email { get; set; }
     public double? MinTemp { get; set; }
     public double? MaxTemp { get; set; }
     public double? ChancesOfRain { get; set; }
-    public string? City { get; set; }
 
     public string? PartitionKey { get; set; }
     public string? RowKey { get; set; }

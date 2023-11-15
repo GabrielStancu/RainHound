@@ -24,7 +24,21 @@ public class AlertsTableStorageService : IAlertsTableStorageService
     {
         await InitTableClientAsync();
 
-        _logger.LogInformation($"Adding alert entity with PartitionKey {alert.PartitionKey}, RowKey {alert.RowKey}");
+        var storedAlert = await _tableClient!
+            .GetEntityAsync<AlertEntity>(alert.PartitionKey, alert.RowKey);
+
+        if (storedAlert.HasValue)
+        {
+            var foundAlert = storedAlert.Value;
+            _logger.LogInformation($"Already found alert for {foundAlert.RowKey}, city: {foundAlert.PartitionKey}. Updating...");
+            alert.RowKey = storedAlert.Value.RowKey;
+            alert.PartitionKey = storedAlert.Value.PartitionKey;
+        }
+        else
+        {
+            _logger.LogInformation($"Adding alert entity with PartitionKey {alert.PartitionKey}, RowKey {alert.RowKey}");
+        }
+
         var response = await _tableClient!.UpsertEntityAsync(alert);
 
         return response;
@@ -68,21 +82,21 @@ public class AlertsTableStorageService : IAlertsTableStorageService
 
     private void GroupAlertsPageByCity(AlertEntity alert, IDictionary<string, List<AlertEntity>> cityAlerts)
     {
-        if (string.IsNullOrEmpty(alert.City))
+        if (string.IsNullOrEmpty(alert.PartitionKey))
         {
             _logger.LogWarning($"Found empty city for row with key {alert.RowKey}");
             return;
         }
 
-        _logger.LogInformation($"Found alert with row key {alert.RowKey} for city {alert.City}");
+        _logger.LogInformation($"Found alert with email {alert.RowKey} for city {alert.PartitionKey}");
 
-        if (cityAlerts.ContainsKey(alert.City))
+        if (cityAlerts.ContainsKey(alert.PartitionKey))
         {
-            cityAlerts[alert.City].Add(alert);
+            cityAlerts[alert.PartitionKey].Add(alert);
         }
         else
         {
-            cityAlerts.Add(alert.City, new List<AlertEntity> { alert });
+            cityAlerts.Add(alert.PartitionKey, new List<AlertEntity> { alert });
         }
     }
 }

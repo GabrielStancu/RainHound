@@ -2,6 +2,7 @@ using System;
 using System.Net;
 using System.Text;
 using System.Text.Json;
+using Google.Protobuf.Compiler;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
@@ -28,7 +29,7 @@ public class SetAlert
     {
         _logger.LogInformation("C# HTTP trigger function processed a request.");
 
-        var content = await req.ReadAsStringAsync() ?? string.Empty;
+        var content = await new StreamReader(req.Body).ReadToEndAsync();
         _logger.LogInformation($"Received request <{content}>");
 
         var setAlertRequest = JsonSerializer.Deserialize<AlertModel>(content);
