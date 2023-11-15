@@ -20,8 +20,6 @@ import { NavbarComponent } from './components/shared/navbar/navbar.component';
 import { FooterComponent } from './components/shared/footer/footer.component';
 import { ForecastComponent } from './components/forecast/forecast.component';
 import { SettingsComponent } from './components/settings/settings.component';
-import { GeneralSettingsComponent } from './components/settings/general-settings/general-settings.component';
-import { AlertSettingsComponent } from './components/settings/alert-settings/alert-settings.component';
 import { ForecastGraphComponent } from './components/forecast/forecast-graph/forecast-graph.component';
 
 @NgModule({
@@ -32,8 +30,6 @@ import { ForecastGraphComponent } from './components/forecast/forecast-graph/for
     FooterComponent,
     ForecastComponent,
     SettingsComponent,
-    GeneralSettingsComponent,
-    AlertSettingsComponent,
     ForecastGraphComponent
   ],
   imports: [
