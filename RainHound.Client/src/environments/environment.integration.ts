@@ -1,4 +1,5 @@
 export const environment = {
   production: false,
-  apiUrl: 'inte-not-defined'
+  weatherUrl: 'inte-not-defined',
+  alertsUrl: 'inte-not-defined'
 };

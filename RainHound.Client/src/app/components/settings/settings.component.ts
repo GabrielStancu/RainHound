@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { WeatherService } from 'src/app/services/weather.service.ts.service';
 
 @Component({
   selector: 'app-settings',
@@ -10,7 +11,7 @@ import { ToastrService } from 'ngx-toastr';
 export class SettingsComponent {
   public alertSettingsForm: FormGroup = new FormGroup({});
 
-  public constructor(private toastr: ToastrService) {}
+  public constructor(private weatherService: WeatherService, private toastr: ToastrService) {}
 
   ngOnInit() {
     const city = localStorage.getItem('rainhound-city') ?? '';
@@ -39,14 +40,25 @@ export class SettingsComponent {
   }
 
   private submitSettings = (settingsFormValue: any) => {
-    localStorage.setItem('rainhound-min-temp', settingsFormValue.minTemp);
-    localStorage.setItem('rainhound-max-temp', settingsFormValue.maxTemp);
-    localStorage.setItem('rainhound-chances-of-rain', settingsFormValue.chancesOfRain);
-    localStorage.setItem('rainhound-email', settingsFormValue.email);
-    localStorage.setItem('rainhound-city', settingsFormValue.city);
-    localStorage.setItem('rainhound-forecast-days', settingsFormValue.forecastDays);
+    this.weatherService.setAlert({
+      email: settingsFormValue.email,
+      city: settingsFormValue.city,
+      minTemp: settingsFormValue.minTemp,
+      maxTemp: settingsFormValue.maxTemp,
+      chancesOfRain: settingsFormValue.chancesOfRain
+    }).subscribe(result => {
+      localStorage.setItem('rainhound-min-temp', settingsFormValue.minTemp);
+      localStorage.setItem('rainhound-max-temp', settingsFormValue.maxTemp);
+      localStorage.setItem('rainhound-chances-of-rain', settingsFormValue.chancesOfRain);
+      localStorage.setItem('rainhound-email', settingsFormValue.email);
+      localStorage.setItem('rainhound-city', settingsFormValue.city);
+      localStorage.setItem('rainhound-forecast-days', settingsFormValue.forecastDays);
 
-    this.toastr.success("Settings Saved!");
+      this.toastr.success("Settings Saved!");
+    }, error => {
+      console.log('ERROR: ' +  JSON.stringify(error));
+      this.toastr.error("Failed to save settings!");
+    });
   }
 
   public hasError = (controlName: string, errorName: string) =>{

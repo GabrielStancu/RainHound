@@ -1,4 +1,5 @@
 export const environment = {
   production: true,
-  apiUrl: 'prod-not-defined'
+  weatherUrl: 'prod-not-defined',
+  alertsUrl: 'prod-not-defined'
 };
