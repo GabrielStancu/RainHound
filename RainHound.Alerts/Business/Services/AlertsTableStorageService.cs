@@ -24,22 +24,9 @@ public class AlertsTableStorageService : IAlertsTableStorageService
     {
         await InitTableClientAsync();
 
-        var storedAlert = await _tableClient!
-            .GetEntityAsync<AlertEntity>(alert.PartitionKey, alert.RowKey);
-
-        if (storedAlert.HasValue)
-        {
-            var foundAlert = storedAlert.Value;
-            _logger.LogInformation($"Already found alert for {foundAlert.RowKey}, city: {foundAlert.PartitionKey}. Updating...");
-            alert.RowKey = storedAlert.Value.RowKey;
-            alert.PartitionKey = storedAlert.Value.PartitionKey;
-        }
-        else
-        {
-            _logger.LogInformation($"Adding alert entity with PartitionKey {alert.PartitionKey}, RowKey {alert.RowKey}");
-        }
-
+        _logger.LogInformation($"Upserting alert entity with PartitionKey {alert.PartitionKey}, RowKey {alert.RowKey}");
         var response = await _tableClient!.UpsertEntityAsync(alert);
+        _logger.LogInformation($"Upserted alert entity with PartitionKey {alert.PartitionKey}, RowKey {alert.RowKey}");
 
         return response;
     }

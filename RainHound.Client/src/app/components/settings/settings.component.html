@@ -15,7 +15,7 @@
         <p>
           <mat-form-field appearance="outline">
             <mat-label>Min temp (°C)</mat-label>
-            <input matInput placeholder="Min temp (°C)" type="text" formControlName="minTemp" id="minTemp">
+            <input matInput placeholder="Min temp (°C)" type="number" formControlName="minTemp" id="minTemp">
             <mat-icon matSuffix>keyboard_arrow_down</mat-icon>
             <mat-hint>Alert when values go below this</mat-hint>
             <mat-error *ngIf="hasError('minTemp', 'minTemp')">Must be below max temperature</mat-error>
@@ -35,7 +35,7 @@
         <p>
           <mat-form-field appearance="outline">
             <mat-label>Max temp (°C)</mat-label>
-            <input matInput placeholder="Max temp (°C)" type="text" formControlName="maxTemp" id="maxTemp">
+            <input matInput placeholder="Max temp (°C)" type="number" formControlName="maxTemp" id="maxTemp">
             <mat-icon matSuffix>keyboard_arrow_up</mat-icon>
             <mat-hint>Alert when values go above this</mat-hint>
           </mat-form-field>
@@ -56,7 +56,7 @@
         <p>
           <mat-form-field appearance="outline">
             <mat-label>Chances of rain (%)</mat-label>
-            <input matInput placeholder="Chances of rain (%)" type="text" formControlName="chancesOfRain" id="chancesOfRain">
+            <input matInput placeholder="Chances of rain (%)" type="number" formControlName="chancesOfRain" id="chancesOfRain">
             <mat-icon matSuffix>flash_on</mat-icon>
             <mat-hint>Alert when values go above this</mat-hint>
             <mat-error *ngIf="hasError('chancesOfRain', 'min') || hasError('chancesOfRain', 'max')">Value must be between 0 and 100</mat-error>
