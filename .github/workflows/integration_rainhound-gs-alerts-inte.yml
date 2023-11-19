@@ -68,7 +68,7 @@ jobs:
 
   deploy-client:
     runs-on: ubuntu-latest
-    needs: build
+    needs: build-client
     environment:
       name: 'Integration'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
