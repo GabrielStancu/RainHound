@@ -28,8 +28,9 @@ jobs:
       - name: 'Resolve Project Dependencies Using Dotnet'
         shell: pwsh
         run: |
-          cd ./RainHound.Alerts
-          pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
+          ls
+          pushd '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
+          ls
           dotnet build --configuration Release --output ./output
           popd
 
@@ -55,7 +56,9 @@ jobs:
 
       - name: npm install, build, and test
         run: |
+          ls
           cd ./RainHound.Client/src
+          ls
           npm install --force
           npm run build --if-present
           npm run test --if-present
