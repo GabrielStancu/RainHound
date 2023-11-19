@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { MonitoringService } from 'src/app/services/monitoring.service';
 import { WeatherService } from 'src/app/services/weather.service.ts.service';
 
 @Component({
@@ -11,7 +12,7 @@ import { WeatherService } from 'src/app/services/weather.service.ts.service';
 export class SettingsComponent {
   public alertSettingsForm: FormGroup = new FormGroup({});
 
-  public constructor(private weatherService: WeatherService, private toastr: ToastrService) {}
+  public constructor(private weatherService: WeatherService, private monitoringService: MonitoringService, private toastr: ToastrService) {}
 
   ngOnInit() {
     const city = localStorage.getItem('rainhound-city') ?? '';
@@ -40,6 +41,7 @@ export class SettingsComponent {
   }
 
   private submitSettings = (settingsFormValue: any) => {
+    this.monitoringService.logTrace("Setting alert: {alert}", { alert: JSON.stringify(settingsFormValue) });
     this.weatherService.setAlert({
       email: settingsFormValue.email,
       city: settingsFormValue.city,
@@ -54,9 +56,10 @@ export class SettingsComponent {
       localStorage.setItem('rainhound-city', settingsFormValue.city);
       localStorage.setItem('rainhound-forecast-days', settingsFormValue.forecastDays);
 
+      this.monitoringService.logTrace("Settings saved successfully", {});
       this.toastr.success("Settings Saved!");
     }, error => {
-      console.log('ERROR: ' +  JSON.stringify(error));
+      this.monitoringService.logException(error);
       this.toastr.error("Failed to save settings!");
     });
   }

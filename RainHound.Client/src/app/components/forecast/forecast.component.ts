@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { ChartConfiguration, ChartOptions } from 'chart.js';
-import { ForecastModel } from 'src/app/models/forecast.model';
+import { ToastrService } from 'ngx-toastr';
+import { MonitoringService } from 'src/app/services/monitoring.service';
 import { WeatherService } from 'src/app/services/weather.service.ts.service';
 import { ForecastMapper } from 'src/app/utils/mappers/forecast.mapper';
 
@@ -19,12 +19,13 @@ export class ForecastComponent {
   public city: string = "";
   public forecastDays : number = 1;
 
-  constructor (private weatherService: WeatherService) { }
+  constructor (private weatherService: WeatherService, private monitoringService: MonitoringService, private toastr: ToastrService) { }
 
   ngOnInit() {
     this.city = localStorage.getItem('rainhound-city') ?? 'London';
     this.forecastDays = Number(localStorage.getItem('rainhound-forecast-days') ?? '1') ?? 1;
 
+    this.monitoringService.logTrace("Getting weather for city: {city} for days: {forecastDays}", { city: this.city, forecastDays: this.forecastDays });
     this.weatherService.getForecast(this.city, this.forecastDays).subscribe(resp => {
       const forecast = ForecastMapper.map(resp);
 
@@ -33,8 +34,11 @@ export class ForecastComponent {
       this.precipitation = forecast.hours.map(f => f.precipMm);
       this.humidity = forecast.hours.map(f => f.humidity);
       this.chanceOfRain = forecast.hours.map(f => f.chanceOfRain);
+
+      this.monitoringService.logTrace("Successfully fetched forecast", {});
     }, error => {
-      console.log('ERROR: ' +  JSON.stringify(error));
+      this.monitoringService.logException(error);
+      this.toastr.error("Could not fetch forecast, please try again later!");
     })
   }
 }

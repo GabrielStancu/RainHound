@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
 import { WeatherModel } from 'src/app/models/weather.model';
+import { MonitoringService } from 'src/app/services/monitoring.service';
 import { WeatherService } from 'src/app/services/weather.service.ts.service';
 import { WeatherToImageConverter } from 'src/app/utils/convertors/weather-to-image.converter';
 import { WeatherMapper } from 'src/app/utils/mappers/weather.mapper';
@@ -13,7 +15,7 @@ export class WeatherComponent {
   public weather: WeatherModel = new WeatherModel();
   public city = "";
 
-  constructor(private weatherService: WeatherService) {}
+  constructor(private weatherService: WeatherService, private monitoringService: MonitoringService, private toastr: ToastrService) {}
 
   convertToCelsius(fahrenheit: number): number {
     return ((fahrenheit - 32) * 5) / 9;
@@ -22,10 +24,13 @@ export class WeatherComponent {
   ngOnInit() {
     this.city = localStorage.getItem('rainhound-city') ?? 'London';
 
+    this.monitoringService.logTrace("Getting weather for city: {city}", { city: this.city });
     this.weatherService.getWeather(this.city).subscribe(resp => {
       this.weather = WeatherMapper.map(resp);
+      this.monitoringService.logTrace("Successfully fetched weather", {});
     }, error => {
-      console.log('ERROR: ' +  JSON.stringify(error));
+      this.monitoringService.logException(error);
+      this.toastr.error("Could not fetch weather, please try again later!");
     })
   }
 
