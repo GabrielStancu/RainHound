@@ -23,7 +23,7 @@ public class AlertsChecker : IAlertsChecker
 
         if (forecast.Forecast?.ForecastDays is null)
         {
-            _logger.LogError($"Invalid forecast: <{JsonSerializer.Serialize(forecast)}>");
+            _logger.LogError("Invalid forecast: <{InvalidForecastDays}>", JsonSerializer.Serialize(forecast));
             return Enumerable.Empty<FoundAlertModel>().ToList();
         }
 
@@ -31,7 +31,7 @@ public class AlertsChecker : IAlertsChecker
         {
             if (day.Hours is null)
             {
-                _logger.LogError($"Invalid hours for forecast: <{JsonSerializer.Serialize(forecast)}>");
+                _logger.LogError("Invalid hours for forecast: <{InvalidForecastHours}>", JsonSerializer.Serialize(forecast));
                 continue;
             }
 
@@ -46,7 +46,7 @@ public class AlertsChecker : IAlertsChecker
 
         var groupedAlerts = GroupConsecutiveAlerts(alerts);
 
-        _logger.LogInformation($"Alerts after grouping: {JsonSerializer.Serialize(groupedAlerts)}");
+        _logger.LogInformation("Alerts after grouping: {GroupedAlerts}", JsonSerializer.Serialize(groupedAlerts));
 
         return groupedAlerts;
     }
@@ -80,7 +80,7 @@ public class AlertsChecker : IAlertsChecker
             Value = hour.ChanceOfRain
         };
 
-        _logger.LogInformation($"Found chance of rain alert: {JsonSerializer.Serialize(alert)}");
+        _logger.LogInformation("Found chance of rain alert: {FoundChanceOfRainAlert}", JsonSerializer.Serialize(alert));
         alerts.Add(alert);
     }
 
@@ -95,7 +95,7 @@ public class AlertsChecker : IAlertsChecker
             Value = hour.TempC
         };
 
-        _logger.LogInformation($"Found min temp alert: {JsonSerializer.Serialize(alert)}");
+        _logger.LogInformation("Found min temp alert: {FoundMinTempAlert}", JsonSerializer.Serialize(alert));
         alerts.Add(alert);
     }
 
@@ -110,7 +110,7 @@ public class AlertsChecker : IAlertsChecker
             Value = hour.TempC
         };
 
-        _logger.LogInformation($"Found max temp alert: {JsonSerializer.Serialize(alert)}");
+        _logger.LogInformation("Found max temp alert: {FoundMaxTempAlert}", JsonSerializer.Serialize(alert));
         alerts.Add(alert);
     }
 

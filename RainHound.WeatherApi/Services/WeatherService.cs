@@ -35,22 +35,19 @@ public class WeatherService : IWeatherService
             .ForDays(days)
             .Build();
 
-        _logger.LogTrace($"Getting forecast for request <{JsonSerializer.Serialize(forecastRequest)}>");
+        _logger.LogInformation("Getting forecast for request <{ForecastRequest}>", JsonSerializer.Serialize(forecastRequest));
 
         var requestUrl = ForecastUrlMapper.Build(forecastRequest);
-
-        _logger.LogTrace($"Calling the URL at {requestUrl}");
-
         var request = new RestRequest(requestUrl);
         var response = await _client.ExecuteGetAsync(request);
 
         if (!response.IsSuccessful || response.Content is null)
         {
-            _logger.LogError($"Failed to get the weather. Response: {response.Content}");
+            _logger.LogError("Failed to get the forecast. Response: {ForecastErrorResponse}", response.Content);
             return null;
         }
 
-        _logger.LogTrace($"Received response: {response.Content}");
+        _logger.LogInformation("Received response: {ForecastSuccessResponse}", response.Content);
         var forecastResponse = JsonSerializer.Deserialize<ForecastResponse>(response.Content);
         
         return forecastResponse;
@@ -67,10 +64,11 @@ public class WeatherService : IWeatherService
 
         if (!response.IsSuccessful || response.Content is null)
         {
-            // Log here
+            _logger.LogError("Failed to get the weather. Response: {WeatherErrorResponse}", response.Content);
             return null;
         }
 
+        _logger.LogInformation("Received response: {WeatherSuccessResponse}", response.Content);
         var weatherResponse = JsonSerializer.Deserialize<WeatherResponse>(response.Content);
         return weatherResponse;
     }

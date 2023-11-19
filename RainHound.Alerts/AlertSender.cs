@@ -43,7 +43,7 @@ public class AlertSender
         await Task.WhenAll(alertTasks);
         await _alertsProcessor.SendAlertsAsync(alertsToEmail);
 
-        _logger.LogInformation($"Next timer schedule at: {myTimer.ScheduleStatus?.Next}");
+        _logger.LogInformation("Next timer schedule at: {AlertSenderNextSchedule}", myTimer.ScheduleStatus?.Next);
     }
 
     private async Task FindAlertsAsync(KeyValuePair<string, List<AlertEntity>> alertThresholdsForCity, ConcurrentBag<FoundAlertModel> emailAlerts)

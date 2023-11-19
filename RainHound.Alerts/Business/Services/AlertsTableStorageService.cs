@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using RainHound.Alerts.Business.Services.Interfaces;
 using RainHound.Alerts.Configuration;
 using RainHound.Alerts.Entities;
+using System.Collections.Concurrent;
 
 namespace RainHound.Alerts.Business.Services;
 
@@ -24,9 +25,9 @@ public class AlertsTableStorageService : IAlertsTableStorageService
     {
         await InitTableClientAsync();
 
-        _logger.LogInformation($"Upserting alert entity with PartitionKey {alert.PartitionKey}, RowKey {alert.RowKey}");
+        _logger.LogInformation("Upserting alert entity with PartitionKey {PartitionKey}, RowKey {RowKey}", alert.PartitionKey, alert.RowKey);
         var response = await _tableClient!.UpsertEntityAsync(alert);
-        _logger.LogInformation($"Upserted alert entity with PartitionKey {alert.PartitionKey}, RowKey {alert.RowKey}");
+        _logger.LogInformation("Upserted alert entity with PartitionKey {PartitionKey}, RowKey {RowKey}", alert.PartitionKey, alert.RowKey);
 
         return response;
     }
@@ -52,7 +53,7 @@ public class AlertsTableStorageService : IAlertsTableStorageService
 
     private async Task InitTableClientAsync()
     {
-        _logger.LogInformation($"Initializing table client for {TableName}");
+        _logger.LogInformation("Initializing table client for {TableName}", TableName);
 
         if (_tableClient != null)
         {
@@ -64,18 +65,18 @@ public class AlertsTableStorageService : IAlertsTableStorageService
         _tableClient = serviceClient.GetTableClient(TableName);
         await _tableClient.CreateIfNotExistsAsync();
 
-        _logger.LogInformation($"Created table client for {TableName}");
+        _logger.LogInformation("Created table client for {TableName}", TableName);
     }
 
     private void GroupAlertsPageByCity(AlertEntity alert, IDictionary<string, List<AlertEntity>> cityAlerts)
     {
         if (string.IsNullOrEmpty(alert.PartitionKey))
         {
-            _logger.LogWarning($"Found empty city for row with key {alert.RowKey}");
+            _logger.LogWarning("Found empty city for row with key {RowKey}", alert.RowKey);
             return;
         }
 
-        _logger.LogInformation($"Found alert with email {alert.RowKey} for city {alert.PartitionKey}");
+        _logger.LogInformation("Found alert with email {RowKey} for city {PartitionKey}", alert.RowKey, alert.PartitionKey);
 
         if (cityAlerts.ContainsKey(alert.PartitionKey))
         {

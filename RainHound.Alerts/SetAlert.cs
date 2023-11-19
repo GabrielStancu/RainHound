@@ -1,8 +1,6 @@
-using System;
 using System.Net;
 using System.Text;
 using System.Text.Json;
-using Google.Protobuf.Compiler;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
@@ -30,7 +28,7 @@ public class SetAlert
         _logger.LogInformation("C# HTTP trigger function processed a request.");
 
         var content = await new StreamReader(req.Body).ReadToEndAsync();
-        _logger.LogInformation($"Received request <{content}>");
+        _logger.LogInformation("Received request <{SetAlertRequestContent}>", content);
 
         var setAlertRequest = JsonSerializer.Deserialize<AlertModel>(content);
         if (setAlertRequest is null)
@@ -44,7 +42,7 @@ public class SetAlert
 
         if (response.IsError)
         {
-            _logger.LogError($"Failed setting the alert with error: <{Encoding.ASCII.GetString(response.Content)}>");
+            _logger.LogError("Failed setting the alert with error: <{SetAlertErrorResponse}>", Encoding.ASCII.GetString(response.Content));
             return req.CreateResponse(HttpStatusCode.BadRequest);
         }
 

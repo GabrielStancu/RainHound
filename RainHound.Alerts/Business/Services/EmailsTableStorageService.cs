@@ -25,7 +25,7 @@ public class EmailsTableStorageService : IEmailsTableStorageService
     {
         await InitTableClientAsync();
 
-        _logger.LogInformation($"Searching alerts for {JsonSerializer.Serialize(emailEntity)}");
+        _logger.LogInformation("Searching alerts for {EmailEntity}", JsonSerializer.Serialize(emailEntity));
         var tableEmails = _tableClient!
             .QueryAsync<EmailEntity>(e => 
                 e.Email == emailEntity.Email && e.StartDate >= emailEntity.StartDate.AddHours(-1)
@@ -36,7 +36,7 @@ public class EmailsTableStorageService : IEmailsTableStorageService
         {
             if (emails.Values.Count > 0)
             {
-                _logger.LogInformation($"Found rows: {JsonSerializer.Serialize(emails.Values)}");
+                _logger.LogInformation("Found rows: {FoundRows}", JsonSerializer.Serialize(emails.Values));
                 return true;
             }
         }
@@ -48,16 +48,16 @@ public class EmailsTableStorageService : IEmailsTableStorageService
     {
         await InitTableClientAsync();
 
-        _logger.LogInformation($"Upserting {JsonSerializer.Serialize(emailEntity)}");
+        _logger.LogInformation("Upserting {UpsertEmailEntity}", JsonSerializer.Serialize(emailEntity));
         var response = await _tableClient!.UpsertEntityAsync(emailEntity);
-        _logger.LogInformation($"Upserted {JsonSerializer.Serialize(emailEntity)}");
+        _logger.LogInformation("Upserted email entity");
 
         return response;
     }
 
     private async Task InitTableClientAsync()
     {
-        _logger.LogInformation($"Initializing table client for {TableName}");
+        _logger.LogInformation("Initializing table client for {TableName}", TableName);
 
         if (_tableClient != null)
         {
@@ -69,6 +69,6 @@ public class EmailsTableStorageService : IEmailsTableStorageService
         _tableClient = serviceClient.GetTableClient(TableName);
         await _tableClient.CreateIfNotExistsAsync();
 
-        _logger.LogInformation($"Created table client for {TableName}");
+        _logger.LogInformation("Created table client for {TableName}", TableName);
     }
 }

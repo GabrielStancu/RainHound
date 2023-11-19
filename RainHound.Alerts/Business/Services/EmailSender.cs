@@ -48,7 +48,7 @@ public class EmailSender : IEmailSender
 
             if (await _emailsTableStorageService.IsAlertEmailedAsync(emailEntity))
             {
-                _logger.LogWarning($"Already sent email to {alert.Email} in city {alert.City}. Skipping");
+                _logger.LogWarning("Already sent email to {Email} in city {City}. Skipping", alert.Email, alert.City);
                 continue;
             }
 
@@ -68,13 +68,13 @@ public class EmailSender : IEmailSender
         {
             var firstEmail = emailAlerts.First();
 
-            _logger.LogInformation($"Sending email alert to {firstEmail.Email} for city {firstEmail.City} for date {firstEmail.StartDate}");
+            _logger.LogInformation("Sending email alert to {Email} for city {City} for date {StartDate}", firstEmail.Email, firstEmail.City, firstEmail.StartDate);
             await emailClient.SendAsync(WaitUntil.Completed, emailMessage);
             _logger.LogInformation("Email sent");
         }
         catch (Exception ex)
         {
-            _logger.LogError($"Could not send the email alert, marking it as failed. Exception: <{ex}>");
+            _logger.LogError("Could not send the email alert, marking it as failed. Exception: <{Exception}>", ex.Message);
             await SetEmailsInErrorAsync(emailAlerts);
         }
     }

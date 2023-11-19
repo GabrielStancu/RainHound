@@ -26,6 +26,7 @@ public class ForecastService : IForecastService
 
         if (response.IsSuccessStatusCode)
         {
+            _logger.LogInformation("Successfully fetched forecast for city {City}", forecastRequest.City);
             await using var contentStream = await response.Content.ReadAsStreamAsync();
             forecastResponse = await JsonSerializer.DeserializeAsync<ForecastResponse>(contentStream);
         }
