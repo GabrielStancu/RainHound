@@ -4,7 +4,6 @@ using Microsoft.Extensions.Logging;
 using RainHound.Alerts.Business.Services.Interfaces;
 using RainHound.Alerts.Configuration;
 using RainHound.Alerts.Entities;
-using System.Collections.Concurrent;
 
 namespace RainHound.Alerts.Business.Services;
 
@@ -27,7 +26,7 @@ public class AlertsTableStorageService : IAlertsTableStorageService
 
         _logger.LogInformation("Upserting alert entity with PartitionKey {PartitionKey}, RowKey {RowKey}", alert.PartitionKey, alert.RowKey);
         var response = await _tableClient!.UpsertEntityAsync(alert);
-        _logger.LogInformation("Upserted alert entity with PartitionKey {PartitionKey}, RowKey {RowKey}", alert.PartitionKey, alert.RowKey);
+        _logger.LogInformation("Upserted alert entity");
 
         return response;
     }
