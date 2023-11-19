@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Caching.Memory;
 using RainHound.WeatherApi.Business;
 using RainHound.WeatherApi.Configuration;
 using RainHound.WeatherApi.Extensions;
@@ -10,6 +11,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<IWeatherService, WeatherService>();
+builder.Services.AddSingleton<IMemoryCache, MemoryCache>();
 builder.Services.AddConfiguration<WeatherApiConfiguration>(builder.Configuration, WeatherApiConfiguration.SectionName);
 builder.Services.AddConfiguration<EnvironmentConfiguration>(builder.Configuration, EnvironmentConfiguration.SectionName);
 builder.Services.AddConfiguration<ClientConfiguration>(builder.Configuration, ClientConfiguration.SectionName);
