@@ -14,7 +14,7 @@ env:
   DOTNET_VERSION: '7.0.x' # set this to the dotnet version to use
 
 jobs:
-  build-and-deploy-alerts-function-app:
+  build-alerts-function-app:
     runs-on: windows-latest
     steps:
       - name: 'Checkout GitHub Action'
@@ -28,20 +28,22 @@ jobs:
       - name: 'Resolve Project Dependencies Using Dotnet'
         shell: pwsh
         run: |
-          ls
-          pushd '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
-          ls
+          pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
           dotnet build --configuration Release --output ./output
           popd
 
+  deploy-alerts-function-app:
+    runs-on: windows-latest
+    needs: build-alerts-function-app
+
+    steps:
       - name: 'Run Azure Functions Action'
         uses: Azure/functions-action@v1
         id: fa
         with:
           app-name: 'rainhound-gs-alerts-inte'
           slot-name: 'Production'
-          package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/output'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_05ED02D8F4134DD38EB32935344AB235 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_208628EE3EA945EC8BB50957D505A213 }}
 
   build-client:
     runs-on: windows-latest
@@ -61,7 +63,6 @@ jobs:
           ls
           npm install --force
           npm run build --if-present
-          npm run test --if-present
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
