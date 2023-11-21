@@ -86,7 +86,7 @@ jobs:
         run: |
           cd ./RainHound.Client/src
           npm install --force
-          npm prune
+          npm prune --force
           npm run build --if-present --configuration integration
 
       - name: Zip artifact for deployment
