@@ -83,8 +83,8 @@ jobs:
       - name: npm install, build, and test
         run: |
           cd ./RainHound.Client/src
-          npm install --force --production
-          npm run build --if-present --configuration=integration 
+          npm install --force --configuration integration
+          npm run build --if-present
 
       - name: Zip artifact for deployment
         run: zip release.zip ./* -r
