@@ -20,6 +20,6 @@ export class WeatherService {
   }
 
   public setAlert(alert: AlertModel): Observable<object> {
-    return this.httpClient.post<object>(environment.alertsUrl + 'SetAlert', alert);
+    return this.httpClient.post<object>(environment.alertsUrl + environment.setAlertEndpoint, alert);
   }
 }

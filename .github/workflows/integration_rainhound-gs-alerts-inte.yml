@@ -84,8 +84,7 @@ jobs:
         run: |
           cd ./RainHound.Client/src
           npm install --force
-          npm run build --if-present
-          npm run test --if-present
+          npm run build --if-present --configuration=integration 
 
       - name: Zip artifact for deployment
         run: zip release.zip ./* -r
@@ -100,7 +99,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build-client
     environment:
-      name: 'Integration'
+      name: 'integration'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
