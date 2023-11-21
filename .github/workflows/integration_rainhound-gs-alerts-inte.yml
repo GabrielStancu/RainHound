@@ -89,11 +89,7 @@ jobs:
           npm run build --if-present
 
       - name: Zip artifact for deployment
-        run: |
-          ls
-          cd ./RainHound.Client
-          ls
-          zip release.zip ./* -r
+        run: zip release.zip ./RainHound.Client/* -r
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
