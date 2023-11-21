@@ -15,7 +15,7 @@ env:
 
 jobs:
   api-docker-build-push-acr:
-    name: 'Docker Build and Push to ACR'
+    name: 'Docker Build and Push API to ACR'
     runs-on: ubuntu-latest
     environment: Integration
   
@@ -44,6 +44,7 @@ jobs:
         file: ./RainHound.WeatherApi/Dockerfile
 
   build-and-deploy-alerts-function-app:
+    name: 'Build and Deploy Alerts Function App'
     runs-on: windows-latest
     steps:
       - name: 'Checkout GitHub Action'
@@ -71,6 +72,7 @@ jobs:
 
   build-client:
     runs-on: ubuntu-latest
+    name: 'Build Client App'
 
     steps:
       - uses: actions/checkout@v4
@@ -97,6 +99,7 @@ jobs:
 
   deploy-client:
     runs-on: ubuntu-latest
+    name: 'Deploy Client App'
     needs: build-client
     environment:
       name: 'integration'
@@ -108,7 +111,7 @@ jobs:
         with:
           name: node-app
       
-      - name: unzip artifact for deployment
+      - name: Unzip artifact for deployment
         run: unzip release.zip
 
       - name: Delete zip
