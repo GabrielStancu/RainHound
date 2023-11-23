@@ -125,6 +125,6 @@ jobs:
         with:
           app-name: 'rainhound-gs-client-inte'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_0290954039CB4F3DBF544159F3B8B837 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_84A81B6500B842029598263006EE47E0 }}
           package: .
 
