@@ -85,8 +85,7 @@ jobs:
       - name: npm install, build, and test
         run: |
           cd ./RainHound.Client
-          npm install --force
-          npm prune --force
+          npm install
           npm run build --integration
 
       - name: Zip artifact for deployment
