@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { WeatherModel } from 'src/app/models/weather.model';
 import { MonitoringService } from 'src/app/services/monitoring.service';
-import { WeatherService } from 'src/app/services/weather.service.ts.service';
+import { WeatherService } from 'src/app/services/weather.service';
 import { WeatherToImageConverter } from 'src/app/utils/convertors/weather-to-image.converter';
 import { WeatherMapper } from 'src/app/utils/mappers/weather.mapper';
 

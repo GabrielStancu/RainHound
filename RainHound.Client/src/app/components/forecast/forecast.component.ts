@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { MonitoringService } from 'src/app/services/monitoring.service';
-import { WeatherService } from 'src/app/services/weather.service.ts.service';
+import { WeatherService } from 'src/app/services/weather.service';
 import { ForecastMapper } from 'src/app/utils/mappers/forecast.mapper';
 
 @Component({

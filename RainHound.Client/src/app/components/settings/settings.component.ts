@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { MonitoringService } from 'src/app/services/monitoring.service';
-import { WeatherService } from 'src/app/services/weather.service.ts.service';
+import { WeatherService } from 'src/app/services/weather.service';
 
 @Component({
   selector: 'app-settings',

@@ -21,6 +21,7 @@ import { FooterComponent } from './components/shared/footer/footer.component';
 import { ForecastComponent } from './components/forecast/forecast.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { ForecastGraphComponent } from './components/forecast/forecast-graph/forecast-graph.component';
+import { EnvironmentComponent } from './components/environment/environment.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { ForecastGraphComponent } from './components/forecast/forecast-graph/for
     FooterComponent,
     ForecastComponent,
     SettingsComponent,
-    ForecastGraphComponent
+    ForecastGraphComponent,
+    EnvironmentComponent
   ],
   imports: [
     BrowserModule,

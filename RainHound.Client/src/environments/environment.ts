@@ -3,5 +3,6 @@ export const environment = {
   weatherUrl: 'prod-not-defined',
   alertsUrl: 'prod-not-defined',
   setAlertEndpoint: 'prod-not-defined',
-  appInsightsInstrumentationKey: 'prod-not-defined'
+  appInsightsInstrumentationKey: 'prod-not-defined',
+  environment: 'Production'
 };
