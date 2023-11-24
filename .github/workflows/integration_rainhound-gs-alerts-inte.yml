@@ -86,13 +86,18 @@ jobs:
         run: |
           cd ./RainHound.Client
           npm install
-          npm run build
+          npm run build --if-present
+        working-directory: .
+
+      - name: Zip artifact for deployment
+        run: zip release.zip ./RainHound.Client/* -r
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
         with:
           name: node-app
-          path: ./RainHound.Client/*
+          path: release.zip
+  
 
   deploy-client:
     runs-on: ubuntu-latest
@@ -107,6 +112,12 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: node-app
+
+      - name: Unzip artifact for deployment
+        run: unzip release.zip
+
+      - name: Delete zip artifact
+        run: rm release.zip
 
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
