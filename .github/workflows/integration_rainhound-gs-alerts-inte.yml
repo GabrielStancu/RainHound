@@ -87,7 +87,6 @@ jobs:
           cd ./RainHound.Client
           npm install
           npm run build --if-present
-        working-directory: .
 
       - name: Zip artifact for deployment
         run: zip release.zip ./RainHound.Client/* -r
