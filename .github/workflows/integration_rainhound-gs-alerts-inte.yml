@@ -71,7 +71,7 @@ jobs:
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_86E6ED96A8FE4996983517F3131A70B5 }}
 
   build-client:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     name: 'Build Client App'
 
     steps:
@@ -125,6 +125,6 @@ jobs:
         with:
           app-name: 'rainhound-gs-client-inte'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_84A81B6500B842029598263006EE47E0 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_E14719C4014C4D469F4721DE2C8947BF }}
           package: .
 
