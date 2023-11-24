@@ -116,9 +116,7 @@ jobs:
         run: unzip release.zip
 
       - name: Delete zip artifact
-        run: |
-          rm release.zip
-          ls
+        run: rm release.zip
 
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
@@ -126,5 +124,5 @@ jobs:
         with:
           app-name: 'rainhound-gs-client-inte'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_E14719C4014C4D469F4721DE2C8947BF }}
-          package: ./dist/client
+          package: ./RainHound.Client/dist/client
 
