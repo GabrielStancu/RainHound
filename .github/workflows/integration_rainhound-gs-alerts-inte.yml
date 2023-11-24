@@ -116,7 +116,9 @@ jobs:
         run: unzip release.zip
 
       - name: Delete zip artifact
-        run: rm release.zip
+        run: |
+          rm release.zip
+          ls
 
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v2
