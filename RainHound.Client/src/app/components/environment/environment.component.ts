@@ -8,8 +8,12 @@ import { environment } from 'src/environments/environment.development';
 })
 export class EnvironmentComponent {
   public environment: string = "";
+  public weatherUrl: string = "";
+  public alertsUrl: string = "";
 
   constructor() {
     this.environment = environment.environment;
+    this.weatherUrl = environment.weatherUrl;
+    this.alertsUrl = environment.alertsUrl;
   }
 }
