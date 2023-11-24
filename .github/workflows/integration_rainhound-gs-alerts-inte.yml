@@ -113,7 +113,6 @@ jobs:
         id: deploy-to-webapp
         with:
           app-name: 'rainhound-gs-client-inte'
-          slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_E14719C4014C4D469F4721DE2C8947BF }}
-          package: .
+          package: ./dist/client
 
