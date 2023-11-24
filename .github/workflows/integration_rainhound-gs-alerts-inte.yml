@@ -91,7 +91,7 @@ jobs:
       - name: Zip artifact for deployment
         run: |
           cd ./RainHound.Client
-          zip release.zip ./* -r
+          powershell Compress-Archive . release.zip
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
