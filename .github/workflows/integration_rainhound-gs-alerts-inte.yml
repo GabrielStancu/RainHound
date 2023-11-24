@@ -123,6 +123,6 @@ jobs:
         id: deploy-to-webapp
         with:
           app-name: 'rainhound-gs-client-inte'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_E14719C4014C4D469F4721DE2C8947BF }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_7D6AB8DD06E44EB2AFE2E953EE47F148 }}
           package: ./RainHound.Client/dist/client
 
