@@ -86,7 +86,7 @@ jobs:
         run: |
           cd ./RainHound.Client
           npm install
-          npm run build --integration
+          npm run build:integration
 
       - name: Zip artifact for deployment
         run: zip release.zip ./RainHound.Client/* -r
