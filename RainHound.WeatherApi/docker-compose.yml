@@ -5,7 +5,7 @@ services:
   proxy:
     image: rainhound-api-proxy
     build:
-      context: ../../
+      context: .
       args:
         ENVIRONMENT: ${ENVIRONMENT}
       dockerfile:  ./RainHound.WeatherApi/Proxy/Dockerfile
@@ -14,7 +14,7 @@ services:
     depends_on:
       - proxy
     build:
-        context: ../../
+        context: .
         args:
           ENVIRONMENT: ${ENVIRONMENT}
         dockerfile: ./RainHound.WeatherApi/Dockerfile

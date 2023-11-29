@@ -37,7 +37,7 @@ jobs:
         password: ${{ secrets.REGISTRY_PASSWORD }}
  
     - name: Start containers
-      run: docker-compose -f "./RainHound.WeatherApi/docker-compose.yml" up -d --build
+      run: docker-compose -f "./RainHound.WeatherApi/docker-compose.yml" up -d --build ENVIRONMENT=Integration
 
   build-and-deploy-alerts-function-app:
     name: 'Build and Deploy Alerts Function App'
