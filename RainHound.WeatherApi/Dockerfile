@@ -5,7 +5,7 @@ EXPOSE 80
 COPY ./RainHound.WeatherApi/*.csproj ./
 RUN dotnet restore
 
-COPY certificate.pfx .
+COPY ./RainHound.WeatherApi/certificate.pfx .
 COPY ./RainHound.WeatherApi ./
 RUN dotnet publish -c Release -o out
 
