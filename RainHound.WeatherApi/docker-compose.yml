@@ -1,0 +1,20 @@
+version: '3.4'
+
+services:
+
+  proxy:
+    image: rainhound-api-proxy
+    build:
+      context: ../../
+      args:
+        ENVIRONMENT: ${ENVIRONMENT}
+      dockerfile:  ./RainHound.WeatherApi/Proxy/Dockerfile
+  api:
+    image:  rainhound-weatherapi
+    depends_on:
+      - proxy
+    build:
+        context: ../../
+        args:
+          ENVIRONMENT: ${ENVIRONMENT}
+        dockerfile: ./RainHound.WeatherApi/Dockerfile
