@@ -1,7 +1,0 @@
-{
-    email gabriel.stancu07@yahoo.com
-}
-
-https://rainhound-weatherapi.cyhpb5c7c8gwckde.switzerlandnorth.azurecontainer.io {
-    reverse_proxy localhost:5000
-}

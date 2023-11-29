@@ -1,7 +1,0 @@
-{
-    email gabriel.stancu07@yahoo.com
-}
-
-https://sth {
-    reverse_proxy localhost:5000
-}
