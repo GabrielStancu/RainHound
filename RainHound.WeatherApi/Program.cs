@@ -3,6 +3,7 @@ using RainHound.WeatherApi.Business;
 using RainHound.WeatherApi.Configuration;
 using RainHound.WeatherApi.Extensions;
 using RainHound.WeatherApi.Services;
+using System.Net;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,14 @@ builder.Services.AddConfiguration<EnvironmentConfiguration>(builder.Configuratio
 builder.Services.AddConfiguration<ClientConfiguration>(builder.Configuration, ClientConfiguration.SectionName);
 builder.Services.AddConfiguration<AlertsFunctionConfiguration>(builder.Configuration, AlertsFunctionConfiguration.SectionName);
 builder.Services.AddCorsPolicies();
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.Listen(IPAddress.Any, 80);
+    options.Listen(IPAddress.Any, 443, listenOptions =>
+    {
+        listenOptions.UseHttps("certificate.cer", "key.pkey");
+    });
+});
 
 var app = builder.Build();
 
