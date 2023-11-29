@@ -1,0 +1,18 @@
+https-portal:
+  image: steveltn/https-portal:1
+  ports:
+    - '80:80'
+    - '443:443'
+  links:
+    - rainhound-weatherapi
+  restart: always
+  environment:
+    DOMAINS: 'rainhound-weatherapi.cyhpb5c7c8gwckde.switzerlandnorth.azurecontainer.io -> http://rainhound-weatherapi:80'
+    # STAGE: 'production' # Don't use production until staging works
+    # FORCE_RENEW: 'true'
+
+rainhound-weatherapi:
+  image:  rainhound-weatherapi
+  build:
+    dockerfile: ./RainHound.WeatherApi/Dockerfile
+
