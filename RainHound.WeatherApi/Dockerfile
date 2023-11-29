@@ -6,8 +6,8 @@ EXPOSE 443
 COPY ./RainHound.WeatherApi/*.csproj ./
 RUN dotnet restore
 
-COPY certificate.cer /app/certificate.cer
-COPY key.pkey /app/key.pkey
+COPY ./RainHound.WeatherApi/certificate.cer /app/certificate.cer
+COPY ./RainHound.WeatherApi/key.pkey /app/key.pkey
 
 COPY ./RainHound.WeatherApi ./
 RUN dotnet publish -c Release -o out
