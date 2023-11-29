@@ -9,6 +9,9 @@ RUN dotnet restore
 COPY ./RainHound.WeatherApi ./
 RUN dotnet publish -c Release -o out
 
+ADD certificate.cer /usr/local/share/ca-certificates/foo.crt
+RUN chmod 644 /usr/local/share/ca-certificates/certificate.cer && update-ca-certificates
+
 FROM mcr.microsoft.com/dotnet/aspnet:7.0
 WORKDIR /app
 COPY --from=build-env /app/out .
