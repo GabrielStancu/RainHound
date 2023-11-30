@@ -42,6 +42,7 @@ jobs:
 
     - name: Deploy to Azure Container Instances
       run: |
+        az login
         az container create --resource-group rainhound-gs-inte --file ./RainHound.WeatherApi/ssl-deploy.yml
       env:
         AZURE_CONTAINER_GROUP_NAME: rainhound-weatherapi-with-ssl
