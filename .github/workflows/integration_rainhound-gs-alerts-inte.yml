@@ -40,13 +40,6 @@ jobs:
         tags: rainhoundgscontainerregistryinte.azurecr.io/rainhound-weatherapi:latest
         file: ./RainHound.WeatherApi/Dockerfile
 
-    - name: Deploy to Azure Container Instances
-      run: |
-        az login
-        az container create --resource-group rainhound-gs-inte --file ./RainHound.WeatherApi/ssl-deploy.yml
-      env:
-        AZURE_CONTAINER_GROUP_NAME: rainhound-weatherapi-with-ssl
-
   build-and-deploy-alerts-function-app:
     name: 'Build and Deploy Alerts Function App'
     runs-on: windows-latest

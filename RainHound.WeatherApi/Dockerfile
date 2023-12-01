@@ -1,6 +1,7 @@
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build-env
 WORKDIR /app
 EXPOSE 80
+EXPOSE 443
 
 COPY ./RainHound.WeatherApi/*.csproj ./
 RUN dotnet restore
