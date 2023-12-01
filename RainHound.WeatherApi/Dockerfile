@@ -6,7 +6,6 @@ EXPOSE 443
 COPY ./RainHound.WeatherApi/*.csproj ./
 RUN dotnet restore
 
-COPY ./RainHound.WeatherApi/certificate.pfx .
 COPY ./RainHound.WeatherApi ./
 RUN dotnet publish -c Release -o out
 
