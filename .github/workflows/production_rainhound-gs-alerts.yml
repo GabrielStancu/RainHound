@@ -1,0 +1,175 @@
+name: Build and deploy Rain Hound services to Production
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+env:
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: './RainHound.Alerts' # set this to the path to your web app project, defaults to the repository root
+  DOTNET_VERSION: '7.0.x' # set this to the dotnet version to use
+  AZURE_WEBAPP_NAME: rainhound-gs-api   # set this to your application's name
+  AZURE_WEBAPP_PACKAGE_PATH: './RainHound.WeatherApi' # set this to the path to your web app project, defaults to the repository root
+
+jobs:
+  # api-docker-build-push-acr:
+  #   name: 'Docker Build and Push API to ACR'
+  #   runs-on: ubuntu-latest
+  #   environment: Integration
+  
+  #   # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
+  #   defaults:
+  #     run:
+  #       shell: bash
+  
+  #   steps:
+  #   # Checkout the repository to the GitHub Actions runner
+  #   - name: Checkout
+  #     uses: actions/checkout@v2
+  
+  #   - name: 'Docker Login'
+  #     uses: azure/docker-login@v1
+  #     with:
+  #       login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+  #       username: ${{ secrets.REGISTRY_USERNAME }}
+  #       password: ${{ secrets.REGISTRY_PASSWORD }}
+ 
+  #   - name: Build the image and push it to ACR
+  #     uses: docker/build-push-action@v2
+  #     with:
+  #       push: true
+  #       tags: rainhoundgscontainerregistryinte.azurecr.io/rainhound-weatherapi:latest
+  #       file: ./RainHound.WeatherApi/Dockerfile
+  build-webapi:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '7.x'
+          include-prerelease: true
+
+      - name: Build with dotnet
+        run: |
+          cd ./RainHound.WeatherApi
+          dotnet build --configuration Release
+
+      - name: dotnet publish
+        run: |
+          cd ./RainHound.WeatherApi
+          dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
+
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v3
+        with:
+          name: .net-app
+          path: ${{env.DOTNET_ROOT}}/myapp
+
+  deploy-webapi:
+    runs-on: windows-latest
+    needs: build-webapi
+    environment:
+      name: 'Production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v3
+        with:
+          name: .net-app
+
+      - name: Deploy to Azure Web App
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: 'rainhound-gs-api'
+          slot-name: 'Production'
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_5D1135AEF99F402DB5077B67512A7BA1 }}
+          package: .
+
+  build-and-deploy-alerts-function-app:
+    name: 'Build and Deploy Alerts Function App'
+    runs-on: windows-latest
+    steps:
+      - name: 'Checkout GitHub Action'
+        uses: actions/checkout@v4
+
+      - name: Setup DotNet ${{ env.DOTNET_VERSION }} Environment
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: 'Resolve Project Dependencies Using Dotnet'
+        shell: pwsh
+        run: |
+          pushd '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
+          dotnet build --configuration Release --output ./output
+          popd
+      - name: 'Run Azure Functions Action'
+        uses: Azure/functions-action@v1
+        id: fa
+        with:
+          app-name: 'rainhound-gs-alerts'
+          slot-name: 'Production'
+          package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/output'
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_86E6ED96A8FE4996983517F3131A70B5 }}
+
+  build-client:
+    runs-on: ubuntu-latest
+    name: 'Build Client App'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js version
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+
+      - name: npm install, build, and test
+        run: |
+          cd ./RainHound.Client
+          npm install
+          npm run build:production
+
+      - name: Zip artifact for deployment
+        run: zip release.zip ./RainHound.Client/* -r
+
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v3
+        with:
+          name: node-app
+          path: release.zip
+  
+  deploy-client:
+    runs-on: ubuntu-latest
+    name: 'Deploy Client App'
+    needs: build-client
+    environment:
+      name: 'production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v3
+        with:
+          name: node-app
+
+      - name: Unzip artifact for deployment
+        run: unzip release.zip
+
+      - name: Delete zip artifact
+        run: rm release.zip
+
+      - name: 'Deploy to Azure Web App'
+        uses: azure/webapps-deploy@v2
+        id: deploy-to-webapp
+        with:
+          app-name: 'rainhound-gs-client'
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_7D6AB8DD06E44EB2AFE2E953EE47F148 }}
+          package: ./RainHound.Client/dist/client
+
