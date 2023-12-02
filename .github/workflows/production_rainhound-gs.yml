@@ -88,7 +88,7 @@ jobs:
         with:
           app-name: 'rainhound-gs-api'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_5D1135AEF99F402DB5077B67512A7BA1 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_84B3D583AF964FE39E89347F280BE37C }}
           package: .
 
   build-and-deploy-alerts-function-app:
@@ -116,7 +116,7 @@ jobs:
           app-name: 'rainhound-gs-alerts'
           slot-name: 'Production'
           package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/output'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_86E6ED96A8FE4996983517F3131A70B5 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_30200EF4A1C24C01812CB82B8774A42D }}
 
   build-client:
     runs-on: ubuntu-latest
@@ -170,6 +170,6 @@ jobs:
         id: deploy-to-webapp
         with:
           app-name: 'rainhound-gs-client'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_7D6AB8DD06E44EB2AFE2E953EE47F148 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_A902380D1658460683DE29CA4F30BF91 }}
           package: ./RainHound.Client/dist/client
 
