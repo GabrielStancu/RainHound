@@ -9,11 +9,11 @@ on:
 env:
   AZURE_FUNCTIONAPP_PACKAGE_PATH: './RainHound.Alerts' # set this to the path to your web app project, defaults to the repository root
   DOTNET_VERSION: '7.0.x' # set this to the dotnet version to use
-  AZURE_WEBAPP_NAME: rainhound-gs-api   # set this to your application's name
+  AZURE_WEBAPP_NAME: rainhound-gs-api   # set this to your backend application's name
   AZURE_WEBAPP_PACKAGE_PATH: './RainHound.WeatherApi' # set this to the path to your web app project, defaults to the repository root
 
 jobs:
-  # api-docker-build-push-acr:
+  # api-docker-build-push-acr: # Initially the backend should have been deployed as a container, failed because of HTTPS requirements
   #   name: 'Docker Build and Push API to ACR'
   #   runs-on: ubuntu-latest
   #   environment: Integration
